@@ -1,0 +1,158 @@
+/* ✅ Prevent full-page zoom & scrolling */
+html,
+body {
+  overflow: hidden; /* No full-page scroll */
+  touch-action: manipulation; /* Prevent zoom gestures */
+  font-family: Arial, sans-serif;
+  background-color: #f8f9fa;
+  margin: 0;
+  padding: 0;
+}
+
+/* ✅ Full-Screen Container */
+.container {
+  width: 100%;
+  height: 100vh; /* Full viewport height */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* ✅ Sticky Header (Stock Management & Buttons) */
+.header {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  background: white;
+  padding: 10px 0;
+  text-align: center;
+  border-bottom: 2px solid #ddd;
+  z-index: 1000;
+}
+
+/* ✅ Buttons Styling */
+button {
+  background: #343a40;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  cursor: pointer;
+  border-radius: 6px;
+  margin: 5px;
+  font-size: 16px;
+}
+
+button:hover {
+  background: #23272b;
+}
+
+/* ✅ Add New Stock Form */
+.add-stock-form {
+  width: 100%;
+  max-width: 600px;
+  background: #f9f9f9;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
+}
+
+/* ✅ Inputs Styling */
+input[type="text"],
+input[type="number"],
+select {
+  width: calc(100% - 20px);
+  padding: 10px;
+  margin: 5px 0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+/* ✅ Table Container (For Scrollable Table) */
+.table-container {
+  width: 100%;
+  max-height: 400px; /* Table scroll limit */
+  overflow-y: auto; /* Enable table scrolling */
+  margin-top: 20px;
+}
+
+/* ✅ Table Styling */
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+th {
+  background: #343a40;
+  color: white;
+}
+
+/* ✅ Edit Inputs */
+td input {
+  width: 100%;
+  padding: 8px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+/* ✅ Buttons in Table */
+.edit-btn {
+  background: #007bff;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-right: 5px;
+}
+
+.edit-btn:hover {
+  background: #0056b3;
+}
+
+.delete-btn {
+  background: #ff4d4d;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.delete-btn:hover {
+  background: #cc0000;
+}
+
+/* ✅ Scrollbar Styling for Table */
+.table-container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.table-container::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+}
+
+/* ✅ Prevent Page Zooming */
+@media (max-width: 768px) {
+  html,
+  body {
+    touch-action: none; /* Disable pinch-to-zoom */
+  }
+}
+
+/* ✅ Ensure only table scrolls */
+.table-container {
+  touch-action: auto; /* Allow scrolling inside the table */
+}

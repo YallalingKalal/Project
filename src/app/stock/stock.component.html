@@ -1,0 +1,144 @@
+<div class="container">
+  <h2 class="sticky-header">Stock Management</h2>
+
+  <div class="button-container">
+    <!-- Parent Product Button -->
+    <button (click)="filterProductList('Parent')">Parent Products</button>
+
+    <!-- Child Product Button -->
+    <button (click)="filterProductList('Child')">Child Products</button>
+
+    <!-- Show All Data Button -->
+    <button (click)="filterProductList('All')">Show All Data</button>
+
+    <!-- Add New Stock Button -->
+    <button (click)="showAddStockForm = !showAddStockForm">
+      Add New Stock
+    </button>
+  </div>
+
+  <!-- Add New Stock Form -->
+  <div *ngIf="showAddStockForm" class="add-stock-form">
+    <h3>Add New Stock</h3>
+    <input
+      type="text"
+      placeholder="Name"
+      [(ngModel)]="newStock.name"
+      required
+    />
+    <input
+      type="text"
+      placeholder="Supplier Name"
+      [(ngModel)]="newStock.supplier"
+      required
+    />
+    <input
+      type="number"
+      placeholder="Price"
+      [(ngModel)]="newStock.price"
+      required
+    />
+    <input
+      type="text"
+      placeholder="HSN No"
+      [(ngModel)]="newStock.hsn_code"
+      required
+    />
+    <select [(ngModel)]="newStock.stock_type">
+      <option value="Parent">Parent</option>
+      <option value="Child">Child</option>
+    </select>
+    <button (click)="addNewStock()">Add Stock</button>
+  </div>
+
+  <!-- Table -->
+  <h3>Selected Products</h3>
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>S. No</th>
+          <th>Name</th>
+          <th>Supplier Name</th>
+          <th>Price (₹)</th>
+          <th>HSN No</th>
+          <th>Stock Type</th>
+          <th>Quantity</th>
+          <th>Total (₹)</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          *ngFor="let product of filteredProductList; let i = index"
+          [id]="'product-' + i"
+        >
+          <td>{{ i + 1 }}</td>
+          <td>
+            <input
+              *ngIf="editingIndex === i"
+              type="text"
+              [(ngModel)]="product.name"
+              class="edit-input"
+            />
+            <span *ngIf="editingIndex !== i">{{ product.name }}</span>
+          </td>
+          <td>
+            <input
+              *ngIf="editingIndex === i"
+              type="text"
+              [(ngModel)]="product.supplier"
+              class="edit-input"
+            />
+            <span *ngIf="editingIndex !== i">{{ product.supplier }}</span>
+          </td>
+          <td>
+            <input
+              *ngIf="editingIndex === i"
+              type="number"
+              [(ngModel)]="product.price"
+              class="edit-input"
+            />
+            <span *ngIf="editingIndex !== i">₹{{ product.price }}</span>
+          </td>
+          <td>
+            <input
+              *ngIf="editingIndex === i"
+              type="text"
+              [(ngModel)]="product.hsn_code"
+              class="edit-input"
+            />
+            <span *ngIf="editingIndex !== i">{{ product.hsn_code }}</span>
+          </td>
+          <td>{{ product.stock_type }}</td>
+          <td>
+            <input
+              type="number"
+              min="1"
+              [(ngModel)]="product.quantity"
+              (input)="updateQuantity()"
+            />
+          </td>
+          <td>₹{{ product.total }}</td>
+          <td>
+            <button
+              class="edit-btn"
+              *ngIf="editingIndex !== i"
+              (click)="editProduct(i)"
+            >
+              ✏️
+            </button>
+            <button
+              class="save-btn"
+              *ngIf="editingIndex === i"
+              (click)="saveEdit()"
+            >
+              💾
+            </button>
+            <button class="delete-btn" (click)="removeProduct(i)">❌</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

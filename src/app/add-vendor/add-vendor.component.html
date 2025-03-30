@@ -1,0 +1,78 @@
+<div class="add-vendor">
+  <h2>Vendor Registration</h2>
+
+  <div class="form-container">
+    <label>Vendor Name:</label>
+    <input
+      type="text"
+      [(ngModel)]="vendor.vendor_name"
+      placeholder="Enter Vendor Name"
+    />
+
+    <label>Address:</label>
+    <input
+      type="text"
+      [(ngModel)]="vendor.address"
+      placeholder="Enter Address"
+    />
+
+    <label>GST Number:</label>
+    <input
+      type="text"
+      [(ngModel)]="vendor.gst_number"
+      placeholder="Enter GST Number"
+    />
+
+    <label>State:</label>
+    <input type="text" [(ngModel)]="vendor.state" placeholder="Enter State" />
+
+    <label>State Code:</label>
+    <input
+      type="text"
+      [(ngModel)]="vendor.state_code"
+      placeholder="Enter State Code"
+    />
+
+    <label>Phone Number:</label>
+    <input
+      type="text"
+      [(ngModel)]="vendor.phone_number"
+      placeholder="Enter Phone Number"
+    />
+
+    <button (click)="addVendor()">
+      {{ editingIndex !== null ? "Update Vendor" : "Add Vendor" }}
+    </button>
+  </div>
+
+  <h3>Vendor List</h3>
+  <table *ngIf="vendors.length > 0">
+    <thead>
+      <tr>
+        <th>Vendor Name</th>
+        <th>Address</th>
+        <th>GST Number</th>
+        <th>State</th>
+        <th>State Code</th>
+        <th>Phone Number</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let v of vendors; let i = index">
+        <td>{{ v.vendor_name }}</td>
+        <td>{{ v.address }}</td>
+        <td>{{ v.gst_number }}</td>
+        <td>{{ v.state }}</td>
+        <td>{{ v.state_code }}</td>
+        <td>{{ v.phone_number }}</td>
+        <td>
+          <button class="edit-btn" (click)="editVendor(i)">Edit</button>
+          <button class="delete-btn" (click)="deleteVendor(i)">Delete</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p *ngIf="vendors.length === 0" class="no-data">No vendors added yet.</p>
+</div>

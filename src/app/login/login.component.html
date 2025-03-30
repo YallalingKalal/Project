@@ -1,0 +1,35 @@
+<div class="main-body">
+  <div class="login-wrapper">
+    <div class="login-card">
+      <h2>Jal Billing Login</h2>
+
+      <div class="input-group">
+        <label for="username">Username</label>
+        <input
+          type="text"
+          name="username"
+          [(ngModel)]="apiLoginObj.username"
+          placeholder="Enter your username"
+          required
+        />
+      </div>
+
+      <div class="input-group">
+        <label for="password">Password</label>
+        <input
+          type="password"
+          name="password"
+          [(ngModel)]="apiLoginObj.password"
+          placeholder="Enter your password"
+          required
+        />
+      </div>
+
+      <button class="login-btn" (click)="onLogin()">Login</button>
+
+      <a href="#" class="forgot-password">Forgot Password?</a>
+
+      <!-- <p *ngIf="errorMessage" class="error-msg">{{ errorMessage }}</p> -->
+    </div>
+  </div>
+</div>

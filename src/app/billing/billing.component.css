@@ -1,0 +1,53 @@
+.billing-container {
+  padding: 20px;
+  margin: 20px;
+}
+
+.billing-table {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.mat-column-sr {
+  width: 70px;
+}
+
+.mat-column-product {
+  min-width: 200px;
+}
+
+.mat-column-hsn {
+  width: 120px;
+}
+
+.mat-column-qty {
+  width: 100px;
+}
+
+.mat-column-rate,
+.mat-column-amount {
+  width: 120px;
+  text-align: right;
+}
+
+.summary-section {
+  margin-top: 20px;
+  padding: 20px;
+}
+
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 8px 16px;
+}
+
+.total-amount {
+  font-size: 1.2em;
+  font-weight: bold;
+}
+
+.spacer {
+  flex: 1;
+}
