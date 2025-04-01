@@ -13,6 +13,9 @@ import { VendorService, Vendor } from '../vendor.service';
 export class AddVendorComponent implements OnInit {
   vendor: Vendor = {
     vendor_name: '',
+    vendor_code: '',
+    p_no: '',
+    pan: '',
     address: '',
     gst_number: '',
     state: '',
@@ -92,6 +95,9 @@ export class AddVendorComponent implements OnInit {
   resetForm(): void {
     this.vendor = {
       vendor_name: '',
+      vendor_code: '',
+      p_no: '',
+      pan: '',
       address: '',
       gst_number: '',
       state: '',

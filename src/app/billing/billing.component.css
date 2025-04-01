@@ -1,53 +1,271 @@
-.billing-container {
+.invoice-container.professional-invoice {
+  width: 95%;
+  max-width: 1200px;
+  margin: 20px auto;
+  border: 1px solid #ccc;
   padding: 20px;
-  margin: 20px;
+  font-family: "Arial", sans-serif;
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  color: #333;
+  display: flex; /* Use flexbox for the main container */
+  flex-direction: column; /* Stack header, general info, table, footer */
+  overflow-x: auto; /* Enable horizontal scrolling for the container if needed */
 }
 
-.billing-table {
-  width: 100%;
+.invoice-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  border-bottom: 2px solid #eee;
+  padding-bottom: 15px;
   margin-bottom: 20px;
 }
 
-.mat-column-sr {
-  width: 70px;
+.invoice-header h2 {
+  margin-top: 0;
+  color: #007bff; /* Primary color */
 }
 
-.mat-column-product {
-  min-width: 200px;
+.invoice-header div p {
+  margin: 5px 0;
+  font-size: 14px;
 }
 
-.mat-column-hsn {
-  width: 120px;
+.general-info {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+  margin-bottom: 20px;
 }
 
-.mat-column-qty {
-  width: 100px;
+.info-left,
+.info-right {
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #f9f9f9;
 }
 
-.mat-column-rate,
-.mat-column-amount {
-  width: 120px;
+.form-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.form-row label {
+  width: 150px;
+  text-align: right;
+  margin-right: 10px;
+  font-weight: bold;
+  color: #555;
+  font-size: 14px;
+  min-width: 150px; /* Ensure label doesn't collapse */
+}
+
+.form-row input[type="text"],
+.form-row input[type="number"],
+.form-row select,
+.form-row textarea {
+  flex-grow: 1;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+  height: auto; /* Adjust height automatically */
+  min-width: 0; /* Allow input to shrink */
+}
+
+.form-row textarea {
+  height: 60px;
+}
+
+.form-row input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  margin-right: 10px;
+  border: 1px solid #ccc;
+  cursor: pointer;
+}
+
+.line-items {
+  margin-bottom: 15px;
+  overflow-x: auto; /* Enable horizontal scrolling for the table container */
+}
+
+.line-items table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: white;
+  font-size: 14px;
+  table-layout: fixed; /* Important for controlling column widths */
+  min-width: 100%; /* Ensure table doesn't collapse if container is narrow */
+}
+
+.line-items th,
+.line-items td {
+  border: 1px solid #eee;
+  padding: 10px;
+  text-align: left;
+  overflow: hidden; /* Prevent text from wrapping */
+  white-space: nowrap; /* Prevent text from wrapping */
+}
+
+.line-items thead {
+  background-color: #f2f2f2;
+  font-weight: bold;
+  color: #444;
+}
+
+.line-items tbody tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+/* Adjusted Column Widths - More constrained */
+.line-items th:nth-child(1),
+.line-items td:nth-child(1) {
+  width: 25%; /* Description */
+}
+
+.line-items th:nth-child(2),
+.line-items td:nth-child(2) {
+  width: 10%; /* HSN / SAC */
+}
+
+.line-items th:nth-child(3),
+.line-items td:nth-child(3) {
+  width: 7%; /* Quantity */
   text-align: right;
 }
 
-.summary-section {
-  margin-top: 20px;
-  padding: 20px;
+.line-items th:nth-child(4),
+.line-items td:nth-child(4) {
+  width: 8%; /* Unit Price */
+  text-align: right;
 }
 
-.summary-row {
+.line-items th:nth-child(5),
+.line-items td:nth-child(5) {
+  width: 7%; /* Discount % */
+  text-align: right;
+}
+
+.line-items th:nth-child(6),
+.line-items td:nth-child(6) {
+  width: 7%; /* GST Rate % */
+  text-align: right;
+}
+
+.line-items th:nth-child(7),
+.line-items td:nth-child(7) {
+  width: 7%; /* CGST */
+  text-align: right;
+}
+
+.line-items th:nth-child(8),
+.line-items td:nth-child(8) {
+  width: 7%; /* SGST */
+  text-align: right;
+}
+
+.line-items th:nth-child(9),
+.line-items td:nth-child(9) {
+  width: 7%; /* IGST */
+  text-align: right;
+}
+
+.line-items th:nth-child(10),
+.line-items td:nth-child(10) {
+  width: 8%; /* Net Amount */
+  text-align: right;
+}
+
+.line-items th:nth-child(11),
+.line-items td:nth-child(11) {
+  width: 8%; /* Total */
+  text-align: right;
+}
+
+.line-items th:last-child,
+.line-items td:last-child {
+  width: 60px; /* Adjusted width for actions */
+  text-align: center;
+}
+
+.add-line-item {
+  padding: 10px 15px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #f0f0f0;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-bottom: 15px;
+}
+
+.add-line-item:hover {
+  background-color: #e0e0e0;
+}
+
+.delete-button {
+  padding: 8px 12px;
+  font-size: 14px;
+  border: 1px solid #d9534f; /* Danger color */
+  border-radius: 4px;
+  background-color: #f44336; /* Danger background */
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  display: block; /* Make button take full width of its container */
+  width: 100%;
+  box-sizing: border-box; /* Include padding and border in the element's total width and height */
+}
+
+.delete-button:hover {
+  background-color: #d32f2f;
+}
+
+.invoice-footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 100%;
-  padding: 8px 16px;
+  border-top: 2px solid #eee;
+  padding-top: 15px;
+  margin-top: 20px;
+  font-size: 14px;
+  color: #333;
 }
 
-.total-amount {
-  font-size: 1.2em;
+.invoice-footer button {
+  padding: 10px 15px;
+  font-size: 14px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.ok-button {
+  background-color: #5cb85c; /* Success color */
+  color: white;
+  border: 1px solid #4cae4c;
+}
+
+.ok-button:hover {
+  background-color: #449d44;
+}
+
+.cancel-button {
+  background-color: #f0ad4e; /* Warning color */
+  color: white;
+  border: 1px solid #eea236;
+}
+
+.cancel-button:hover {
+  background-color: #eb9316;
+}
+
+.invoice-footer span {
   font-weight: bold;
-}
-
-.spacer {
-  flex: 1;
 }

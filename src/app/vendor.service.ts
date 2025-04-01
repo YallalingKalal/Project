@@ -5,6 +5,9 @@ import { Observable } from 'rxjs';
 export interface Vendor {
   id?: number;
   vendor_name: string;
+  vendor_code: string;
+  pan: string;
+  p_no: string;
   address: string;
   gst_number: string;
   state: string;

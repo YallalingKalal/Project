@@ -9,6 +9,23 @@
       placeholder="Enter Vendor Name"
     />
 
+    <label>Vendor Code:</label>
+    <input
+      type="text"
+      [(ngModel)]="vendor.vendor_code"
+      placeholder="Enter Vendor Code"
+    />
+
+    <label>PAN:</label>
+    <input type="text" [(ngModel)]="vendor.pan" placeholder="Enter PAN Code" />
+
+    <label>P_NO:</label>
+    <input
+      type="text"
+      [(ngModel)]="vendor.p_no"
+      placeholder="Enter P_NO Code"
+    />
+
     <label>Address:</label>
     <input
       type="text"
@@ -50,6 +67,9 @@
     <thead>
       <tr>
         <th>Vendor Name</th>
+        <th>Vendor Code</th>
+        <th>PAN</th>
+        <th>P_NO</th>
         <th>Address</th>
         <th>GST Number</th>
         <th>State</th>

@@ -1,139 +1,178 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { MatCardModule } from '@angular/material/card';
-import { MatTableModule } from '@angular/material/table';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatSelectModule } from '@angular/material/select';
-import { MatInputModule } from '@angular/material/input';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { MatListModule } from '@angular/material/list';
-import { MatDividerModule } from '@angular/material/divider';
-import { MatTableDataSource } from '@angular/material/table';
-import { MatSelectChange } from '@angular/material/select';
 
-interface Product {
+interface Vendor {
   name: string;
-  hsnCode: number;
-  rate: number;
-}
-
-interface BillItem {
-  id: number;
-  selectedProduct: Product | null;
-  quantity: number;
-  rate: number;
-  amount: number;
+  address: string;
+  gstNo: string;
+  consignee: string;
 }
 
 @Component({
   selector: 'app-billing',
   standalone: true,
+  imports: [CommonModule, FormsModule],
   templateUrl: './billing.component.html',
   styleUrls: ['./billing.component.css'],
-  imports: [
-    CommonModule,
-    FormsModule,
-    MatCardModule,
-    MatTableModule,
-    MatFormFieldModule,
-    MatSelectModule,
-    MatInputModule,
-    MatButtonModule,
-    MatIconModule,
-    MatListModule,
-    MatDividerModule,
-  ],
 })
 export class BillingComponent implements OnInit {
-  displayedColumns: string[] = [
-    'sr',
-    'product',
-    'hsn',
-    'qty',
-    'rate',
-    'amount',
+  invoiceData = {
+    companyName: '',
+    customerName: '',
+    customerAddress: '',
+    invoiceNumber: '',
+    gstNo: '',
+    consignee: '',
+    remarks: '',
+    inclusive: false,
+    copies: 2,
+    invoiceDate: '',
+    challanNo: '',
+    orderDate: '',
+    orderNo: '',
+    vehNo: '',
+    transportMode: 'BY ROAD',
+    dueDate: '',
+    timeOfSupply: '',
+    paymentTerms: '',
+    document: '',
+    deliveryTerms: '',
+    transport: '',
+    placeOfSupply: '',
+    lrNo: '',
+    lrDate: '',
+    ref: '',
+    lineItems: [
+      {
+        description: '',
+        hsnSac: '',
+        quantity: 0,
+        unitPrice: 0,
+        discountPercentage: 0,
+        gstRate: 0,
+      },
+    ],
+  };
+
+  vendors: Vendor[] = [
+    {
+      name: 'Vendor A',
+      address: '123 Main St, City A',
+      gstNo: 'GSTA12345',
+      consignee: 'Consignee A',
+    },
+    {
+      name: 'Vendor B',
+      address: '456 Elm Rd, City B',
+      gstNo: 'GSTB67890',
+      consignee: 'Consignee B',
+    },
   ];
-  dataSource!: MatTableDataSource<BillItem>;
-  private idCounter = 0;
 
-  productList: Product[] = [
-    { name: 'Pen', hsnCode: 23805, rate: 5.0 },
-    { name: 'Notebook', hsnCode: 4820, rate: 20.0 },
-    { name: 'Eraser', hsnCode: 3926, rate: 2.0 },
-    { name: 'Sharpener', hsnCode: 8214, rate: 3.0 },
-    { name: 'Pencil', hsnCode: 9609, rate: 4.0 },
-  ];
-
-  ngOnInit() {
-    this.dataSource = new MatTableDataSource([this.createNewBillItem()]);
+  ngOnInit(): void {
+    const today = new Date();
+    this.invoiceData.invoiceDate = this.formatDate(today);
   }
 
-  createNewBillItem(): BillItem {
-    return {
-      id: ++this.idCounter,
-      selectedProduct: null,
-      quantity: 1,
-      rate: 0,
-      amount: 0,
-    };
+  formatDate(date: Date): string {
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const day = date.getDate().toString().padStart(2, '0');
+    return `${year}-${month}-${day}`;
   }
 
-  onProductChange(event: MatSelectChange, row: BillItem): void {
-    const product = event.value as Product;
-    row.rate = product.rate;
-    this.calculateAmount(row);
+  addLineItem() {
+    this.invoiceData.lineItems.push({
+      description: '',
+      hsnSac: '',
+      quantity: 0,
+      unitPrice: 0,
+      discountPercentage: 0,
+      gstRate: 0,
+    });
   }
 
-  calculateAmount(row: BillItem): void {
-    if (row.selectedProduct && row.quantity > 0) {
-      row.amount = row.rate * row.quantity;
-      this.checkAndAddRow();
+  removeLineItem(index: number) {
+    this.invoiceData.lineItems.splice(index, 1);
+  }
+
+  calculateCGST(item: any): number {
+    return item.unitPrice * item.quantity * (item.gstRate / 2 / 100);
+  }
+
+  calculateSGST(item: any): number {
+    return this.calculateCGST(item);
+  }
+
+  calculateIGST(item: any): number {
+    return item.unitPrice * item.quantity * (item.gstRate / 100);
+  }
+
+  calculateNetAmount(item: any): number {
+    const priceAfterDiscount =
+      item.unitPrice * item.quantity * (1 - item.discountPercentage / 100);
+    return priceAfterDiscount;
+  }
+
+  calculateLineItemTotal(item: any): number {
+    const netAmount = this.calculateNetAmount(item);
+    const gstAmount =
+      this.calculateIGST(item) > 0
+        ? this.calculateIGST(item)
+        : this.calculateCGST(item) + this.calculateSGST(item);
+    return netAmount + gstAmount;
+  }
+
+  calculateInvoiceTotal(): number {
+    let total = 0;
+    for (const item of this.invoiceData.lineItems) {
+      total += this.calculateLineItemTotal(item);
+    }
+    return total;
+  }
+
+  onVendorSelected(vendorName: string) {
+    const selectedVendor = this.vendors.find((v) => v.name === vendorName);
+    if (selectedVendor) {
+      this.invoiceData.gstNo = selectedVendor.gstNo;
+      this.invoiceData.consignee = selectedVendor.consignee;
+      this.invoiceData.customerAddress = selectedVendor.address;
+      this.invoiceData.customerName = selectedVendor.name; // Set customer name to vendor name
+    } else {
+      this.invoiceData.gstNo = '';
+      this.invoiceData.consignee = '';
+      this.invoiceData.customerAddress = '';
+      this.invoiceData.customerName = '';
     }
   }
 
-  private checkAndAddRow(): void {
-    const items = this.dataSource.data;
-    const lastItem = items[items.length - 1];
-
-    if (lastItem.selectedProduct !== null) {
-      items.push(this.createNewBillItem());
-      this.dataSource.data = [...items];
-    }
+  updateInvoice() {
+    console.log('Invoice Updated:', this.invoiceData);
+    // Implement your logic to update the invoice data
   }
 
-  addRow(): void {
-    const items = this.dataSource.data;
-    items.push(this.createNewBillItem());
-    this.dataSource.data = [...items];
+  printInvoice() {
+    window.print();
   }
 
-  getTotalAmount(): number {
-    return this.dataSource.data
-      .filter((item) => item.selectedProduct !== null)
-      .reduce((total, item) => total + item.amount, 0);
+  generateChallan() {
+    console.log('Challan Generated:', this.invoiceData);
+    // Implement your logic to generate a challan
   }
 
-  getGST(): number {
-    return this.getTotalAmount() * 0.18;
+  submitForm() {
+    console.log('Form Submitted:', this.invoiceData);
+    // Implement your logic to submit the form data
   }
 
-  getFinalAmount(): number {
-    return this.getTotalAmount() + this.getGST();
+  cancelForm() {
+    console.log('Form Cancelled');
+    // Implement your logic to cancel the form
   }
 
-  isValidForInvoice(): boolean {
-    return this.dataSource.data.some(
-      (item) =>
-        item.selectedProduct !== null && item.quantity > 0 && item.amount > 0
-    );
-  }
-
-  generateInvoice(): void {
-    // Implement invoice generation logic here
-    console.log('Generating invoice...');
-    console.log('Items:', this.dataSource.data);
-    console.log('Total Amount:', this.getFinalAmount());
+  changeSomething() {
+    console.log('Change button clicked');
+    // Implement the functionality for the Change button
   }
 }

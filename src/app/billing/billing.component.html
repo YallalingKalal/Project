@@ -1,140 +1,238 @@
-<div class="billing-container mat-elevation-z8">
-  <mat-card class="billing-card">
-    <mat-card-header>
-      <mat-card-title>Invoice Generator</mat-card-title>
-      <mat-card-subtitle>Create your professional invoice</mat-card-subtitle>
-    </mat-card-header>
-
-    <mat-card-content>
-      <table mat-table [dataSource]="dataSource" class="billing-table">
-        <!-- Serial Number Column -->
-        <ng-container matColumnDef="sr">
-          <th mat-header-cell *matHeaderCellDef>No.</th>
-          <td mat-cell *matCellDef="let row; let i = index">{{ i + 1 }}</td>
-          <td mat-footer-cell *matFooterCellDef></td>
-        </ng-container>
-
-        <!-- Product Column -->
-        <ng-container matColumnDef="product">
-          <th mat-header-cell *matHeaderCellDef>Product</th>
-          <td mat-cell *matCellDef="let row">
-            <mat-form-field appearance="outline">
-              <mat-select
-                [(ngModel)]="row.selectedProduct"
-                (selectionChange)="onProductChange($event, row)"
-                name="product-{{ row.id }}"
-                required
-              >
-                <mat-option *ngFor="let p of productList" [value]="p">
-                  {{ p.name }}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
-          </td>
-          <td mat-footer-cell *matFooterCellDef><strong>Total</strong></td>
-        </ng-container>
-
-        <!-- HSN Code Column -->
-        <ng-container matColumnDef="hsn">
-          <th mat-header-cell *matHeaderCellDef>HSN Code</th>
-          <td mat-cell *matCellDef="let row">
-            {{ row.selectedProduct?.hsnCode || "-" }}
-          </td>
-          <td mat-footer-cell *matFooterCellDef></td>
-        </ng-container>
-
-        <!-- Quantity Column -->
-        <ng-container matColumnDef="qty">
-          <th mat-header-cell *matHeaderCellDef>QTY</th>
-          <td mat-cell *matCellDef="let row">
-            <mat-form-field appearance="outline">
-              <input
-                matInput
-                type="number"
-                [(ngModel)]="row.quantity"
-                (ngModelChange)="calculateAmount(row)"
-                [name]="'qty-' + row.id"
-                min="1"
-                required
-              />
-              <mat-error>Quantity is required</mat-error>
-            </mat-form-field>
-          </td>
-          <td mat-footer-cell *matFooterCellDef></td>
-        </ng-container>
-
-        <!-- Rate Column -->
-        <ng-container matColumnDef="rate">
-          <th mat-header-cell *matHeaderCellDef>Rate</th>
-          <td mat-cell *matCellDef="let row">
-            ₹{{ row.selectedProduct?.rate | number : "1.2-2" }}
-          </td>
-          <td mat-footer-cell *matFooterCellDef><strong>GST (18%)</strong></td>
-        </ng-container>
-
-        <!-- Amount Column -->
-        <ng-container matColumnDef="amount">
-          <th mat-header-cell *matHeaderCellDef>Amount</th>
-          <td mat-cell *matCellDef="let row">
-            ₹{{ row.amount | number : "1.2-2" }}
-          </td>
-          <td mat-footer-cell *matFooterCellDef>
-            <strong>₹{{ getGST() | number : "1.2-2" }}</strong>
-          </td>
-        </ng-container>
-
-        <tr
-          mat-header-row
-          *matHeaderRowDef="displayedColumns; sticky: true"
-        ></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-        <tr
-          mat-footer-row
-          *matFooterRowDef="displayedColumns; sticky: true"
-        ></tr>
-      </table>
-
-      <div class="summary-section mat-elevation-z1">
-        <mat-list>
-          <div mat-list-item>
-            <div class="summary-row">
-              <span>Subtotal</span>
-              <span class="spacer"></span>
-              <strong>₹{{ getTotalAmount() | number : "1.2-2" }}</strong>
-            </div>
-          </div>
-          <mat-divider></mat-divider>
-          <div mat-list-item>
-            <div class="summary-row">
-              <span>GST (18%)</span>
-              <span class="spacer"></span>
-              <strong>₹{{ getGST() | number : "1.2-2" }}</strong>
-            </div>
-          </div>
-          <mat-divider></mat-divider>
-          <div mat-list-item class="total-amount">
-            <div class="summary-row">
-              <span>Total Amount</span>
-              <span class="spacer"></span>
-              <strong>₹{{ getFinalAmount() | number : "1.2-2" }}</strong>
-            </div>
-          </div>
-        </mat-list>
+<div class="invoice-container professional-invoice">
+  <div class="invoice-header">
+    <div>
+      <h2>Invoice</h2>
+    </div>
+    <div>
+      <p>Company Name: JAL ENTERPRISES</p>
+      <p>GST No: 27AJXPJ8712G1ZP</p>
+    </div>
+  </div>
+  <div class="general-info">
+    <div class="info-left">
+      <div class="form-row">
+        <label for="vendorName">Vendor Name:</label>
+        <select
+          id="vendorName"
+          [(ngModel)]="invoiceData.companyName"
+          (change)="onVendorSelected(invoiceData.companyName)"
+        >
+          <option value="">Select Vendor</option>
+          <option *ngFor="let vendor of vendors" [value]="vendor.name">
+            {{ vendor.name }}
+          </option>
+        </select>
       </div>
-    </mat-card-content>
-
-    <mat-card-actions align="end">
-      <button mat-stroked-button color="primary" (click)="addRow()">
-        <mat-icon>add</mat-icon> Add Item
-      </button>
-      <button
-        mat-raised-button
-        color="primary"
-        [disabled]="!isValidForInvoice()"
-        (click)="generateInvoice()"
-      >
-        <mat-icon>receipt</mat-icon> Generate Invoice
-      </button>
-    </mat-card-actions>
-  </mat-card>
+      <div class="form-row">
+        <label for="gstNo">GST No.:</label>
+        <input
+          type="text"
+          id="gstNo"
+          [(ngModel)]="invoiceData.gstNo"
+          [readonly]="true"
+        />
+      </div>
+      <div class="form-row">
+        <label for="consignee">Consignee:</label>
+        <input
+          type="text"
+          id="consignee"
+          [(ngModel)]="invoiceData.consignee"
+          [readonly]="true"
+        />
+      </div>
+      <div class="form-row">
+        <label for="customerName">Customer Name:</label>
+        <input
+          type="text"
+          id="customerName"
+          [(ngModel)]="invoiceData.customerName"
+        />
+      </div>
+      <div class="form-row">
+        <label for="customerAddress">Customer Address:</label>
+        <textarea
+          id="customerAddress"
+          rows="2"
+          [(ngModel)]="invoiceData.customerAddress"
+        ></textarea>
+      </div>
+      <div class="form-row">
+        <label for="remarks">Remarks:</label>
+        <textarea
+          id="remarks"
+          rows="1"
+          [(ngModel)]="invoiceData.remarks"
+        ></textarea>
+      </div>
+      <div class="form-row">
+        <input
+          type="checkbox"
+          id="inclusive"
+          [(ngModel)]="invoiceData.inclusive"
+        />
+        <label for="inclusive">Inclusive</label>
+        <label for="copies">Copies</label>
+        <input type="number" id="copies" [(ngModel)]="invoiceData.copies" />
+        <button (click)="updateInvoice()">Update</button>
+      </div>
+    </div>
+    <div class="info-right">
+      <div class="form-row">
+        <label for="invoiceNo">Invoice No.:</label>
+        <input
+          type="text"
+          id="invoiceNo"
+          [(ngModel)]="invoiceData.invoiceNumber"
+        />
+      </div>
+      <div class="form-row">
+        <label for="date">Date:</label>
+        <input type="date" id="date" [(ngModel)]="invoiceData.invoiceDate" />
+      </div>
+      <div class="form-row">
+        <label for="challanNo">Challan No.:</label>
+        <input type="text" id="challanNo" [(ngModel)]="invoiceData.challanNo" />
+      </div>
+      <div class="form-row">
+        <label for="orderDate">Order Date:</label>
+        <input type="date" id="orderDate" [(ngModel)]="invoiceData.orderDate" />
+      </div>
+      <div class="form-row">
+        <label for="orderNo">Order No.:</label>
+        <input type="text" id="orderNo" [(ngModel)]="invoiceData.orderNo" />
+      </div>
+      <div class="form-row">
+        <label for="vehNo">Veh.No.:</label>
+        <input type="text" id="vehNo" [(ngModel)]="invoiceData.vehNo" />
+      </div>
+      <div class="form-row">
+        <label for="transportMode">Transport Mode:</label>
+        <select id="transportMode" [(ngModel)]="invoiceData.transportMode">
+          <option value="BY ROAD">BY ROAD</option>
+          <option value="BY AIR">BY AIR</option>
+          <option value="BY SEA">BY SEA</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <label for="dueDate">Due On.:</label>
+        <input type="date" id="dueDate" [(ngModel)]="invoiceData.dueDate" />
+      </div>
+      <div class="form-row">
+        <label for="timeOfSupply">Time of Supply:</label>
+        <input
+          type="text"
+          id="timeOfSupply"
+          [(ngModel)]="invoiceData.timeOfSupply"
+        />
+      </div>
+      <div class="form-row">
+        <label for="paymentTerms">Payment Terms:</label>
+        <input
+          type="text"
+          id="paymentTerms"
+          [(ngModel)]="invoiceData.paymentTerms"
+        />
+      </div>
+      <div class="form-row">
+        <label for="document">Document:</label>
+        <input type="text" id="document" [(ngModel)]="invoiceData.document" />
+      </div>
+      <div class="form-row">
+        <label for="deliveryTerms">Delivery Terms:</label>
+        <input
+          type="text"
+          id="deliveryTerms"
+          [(ngModel)]="invoiceData.deliveryTerms"
+        />
+      </div>
+      <div class="form-row">
+        <label for="transport">Transport:</label>
+        <input type="text" id="transport" [(ngModel)]="invoiceData.transport" />
+      </div>
+      <div class="form-row">
+        <label for="placeOfSupply">Place Of Supply:</label>
+        <input
+          type="text"
+          id="placeOfSupply"
+          [(ngModel)]="invoiceData.placeOfSupply"
+        />
+      </div>
+      <div class="form-row">
+        <label for="lrNo">L.R. No.:</label>
+        <input type="text" id="lrNo" [(ngModel)]="invoiceData.lrNo" />
+      </div>
+      <div class="form-row">
+        <label for="lrDate">L.R. Date:</label>
+        <input type="date" id="lrDate" [(ngModel)]="invoiceData.lrDate" />
+      </div>
+      <div class="form-row">
+        <label for="ref">Ref:</label>
+        <input type="text" id="ref" [(ngModel)]="invoiceData.ref" />
+      </div>
+    </div>
+  </div>
+  <div class="line-items">
+    <table>
+      <thead>
+        <tr>
+          <th>Description</th>
+          <th>HSN / SAC</th>
+          <th>Quantity</th>
+          <th>Unit Price</th>
+          <th>Discount %</th>
+          <th>GST Rate %</th>
+          <th>CGST</th>
+          <th>SGST</th>
+          <th>IGST</th>
+          <th>Net Amount</th>
+          <th>Total</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of invoiceData.lineItems; let i = index">
+          <td><input type="text" [(ngModel)]="item.description" /></td>
+          <td><input type="text" [(ngModel)]="item.hsnSac" /></td>
+          <td><input type="number" [(ngModel)]="item.quantity" /></td>
+          <td><input type="number" [(ngModel)]="item.unitPrice" /></td>
+          <td><input type="number" [(ngModel)]="item.discountPercentage" /></td>
+          <td><input type="number" [(ngModel)]="item.gstRate" /></td>
+          <td>
+            <span>{{ calculateCGST(item) | number : "1.2-2" }}</span>
+          </td>
+          <td>
+            <span>{{ calculateSGST(item) | number : "1.2-2" }}</span>
+          </td>
+          <td>
+            <span>{{ calculateIGST(item) | number : "1.2-2" }}</span>
+          </td>
+          <td>
+            <span>{{ calculateNetAmount(item) | number : "1.2-2" }}</span>
+          </td>
+          <td>
+            <span>{{ calculateLineItemTotal(item) | number : "1.2-2" }}</span>
+          </td>
+          <td>
+            <button class="delete-button" (click)="removeLineItem(i)">
+              Delete
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <button class="add-line-item" (click)="addLineItem()">Add Line Item</button>
+  </div>
+  <div class="invoice-footer">
+    <div class="footer-left">
+      <button (click)="changeSomething()">Change</button>
+      <button (click)="printInvoice()">Print</button>
+      <button (click)="generateChallan()">Challan</button>
+    </div>
+    <div class="footer-right">
+      <span>Total: {{ calculateInvoiceTotal() | number : "1.2-2" }}</span>
+      <button class="ok-button" (click)="submitForm()">OK</button>
+      <button class="cancel-button" (click)="cancelForm()">Cancel</button>
+    </div>
+  </div>
 </div>
