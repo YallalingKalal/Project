@@ -2,7 +2,7 @@
 .menu {
   background-color: #0a192f; /* Dark blue background */
   height: 100%;
-  width: 280px;
+  width: 330px;
   padding: 20px;
   display: flex;
   flex-direction: column;
@@ -95,4 +95,15 @@ span {
 
 .menu-button:hover {
   background: rgba(255, 255, 255, 0.1);
+}
+
+/* Style the overall dropdown panel */
+::ng-deep .mat-menu-panel {
+  background-color: #0a192f; /* Dark blue to match the sidebar */
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5);
+}
+
+.drop {
+  color: black;
 }

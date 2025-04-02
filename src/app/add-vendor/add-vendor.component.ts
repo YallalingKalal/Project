@@ -35,8 +35,8 @@ export class AddVendorComponent implements OnInit {
   // Load the vendor list from the backend
   loadVendors(): void {
     this.vendorService.getVendors().subscribe({
-      next: (data: Vendor[]) => {
-        this.vendors = data;
+      next: (data: any) => {
+        this.vendors = data.all_info;
       },
       error: (err) => console.error('Error fetching vendors:', err),
     });

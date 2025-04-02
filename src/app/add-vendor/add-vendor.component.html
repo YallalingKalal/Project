@@ -67,7 +67,7 @@
     <thead>
       <tr>
         <th>Vendor Name</th>
-        <th>Vendor</th>
+        <th>Vendor Code</th>
         <th>PAN</th>
         <th>P_NO</th>
         <th>Address</th>
@@ -81,6 +81,9 @@
     <tbody>
       <tr *ngFor="let v of vendors; let i = index">
         <td>{{ v.vendor_name }}</td>
+        <td>{{ v.vendor_code }}</td>
+        <td>{{ v.pan }}</td>
+        <td>{{ v.p_no }}</td>
         <td>{{ v.address }}</td>
         <td>{{ v.gst_number }}</td>
         <td>{{ v.state }}</td>

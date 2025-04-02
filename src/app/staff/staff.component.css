@@ -1,10 +1,14 @@
+/* staff.component.css */
+
+/* Aapke pehle ke CSS styles */
+
 body {
   font-family: "Poppins", sans-serif;
-  background: linear-gradient(120deg, #3498db, #8e44ad);
+  background: linear-gradient(120deg, #0a192f, #8e44ad);
   margin: 0;
   padding: 0;
-  width: 100vw;
-  height: 100vh;
+  width: 100%; /* Changed from 100vw */
+  min-height: 100vh; /* Changed from 100vh to avoid potential scrollbar issues */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -19,7 +23,7 @@ body {
   box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
   box-sizing: border-box;
   animation: fadeIn 0.5s ease-in-out;
-  margin: auto;
+  margin: 20px auto; /* Added top/bottom margin for better spacing */
 }
 
 h2 {
@@ -30,7 +34,7 @@ h2 {
 
 h3 {
   color: #555;
-  border-bottom: 2px solid #3498db;
+  border-bottom: 2px solid #0a192f;
   padding-bottom: 5px;
   margin-bottom: 15px;
 }
@@ -69,7 +73,7 @@ select {
 
 input:focus,
 select:focus {
-  border-color: #3498db;
+  border-color: #0a192f;
   box-shadow: 0px 0px 5px rgba(52, 152, 219, 0.5);
 }
 
@@ -82,25 +86,43 @@ select:focus {
   max-width: 150px;
   max-height: 150px;
   border-radius: 50%;
-  border: 2px solid #3498db;
+  border: 2px solid #0a192f;
 }
 
 button {
-  width: 100%;
-  padding: 14px;
-  background: #3498db;
+  width: auto; /* Adjusted to fit content */
+  padding: 10px 15px; /* Adjusted padding */
+  background: #0a192f;
   color: white;
-  font-size: 18px;
+  font-size: 16px; /* Adjusted font size */
   font-weight: bold;
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  margin-top: 20px;
+  margin-top: 15px; /* Adjusted margin */
+  margin-right: 10px; /* Added right margin for multiple buttons */
   transition: background 0.3s;
 }
 
 button:hover {
-  background: #2980b9;
+  background: black;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+th,
+td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+th {
+  background-color: #f2f2f2;
 }
 
 @media (max-width: 992px) {

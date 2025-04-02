@@ -1,0 +1,107 @@
+<div class="add-vendor">
+  <div class="add-vendor-header">
+    <h2>Supplier Registration</h2>
+  </div>
+
+  <div class="form-container">
+    <label>Supplier Name:</label>
+    <input
+      type="text"
+      [(ngModel)]="supplier.supplier_name"
+      placeholder="Enter Supplier Name"
+    />
+
+    <label>Address:</label>
+    <input
+      type="text"
+      [(ngModel)]="supplier.address"
+      placeholder="Enter Address"
+    />
+
+    <label>GST Number:</label>
+    <input
+      type="text"
+      [(ngModel)]="supplier.gst_number"
+      placeholder="Enter GST Number"
+    />
+
+    <label>State:</label>
+    <input type="text" [(ngModel)]="supplier.state" placeholder="Enter State" />
+
+    <label>State Code:</label>
+    <input
+      type="text"
+      [(ngModel)]="supplier.state_code"
+      placeholder="Enter State Code"
+    />
+
+    <label>Phone Number:</label>
+    <input
+      type="text"
+      [(ngModel)]="supplier.phone_number"
+      placeholder="Enter Phone Number"
+    />
+
+    <label>P.O. Number:</label>
+    <input
+      type="text"
+      [(ngModel)]="supplier.p_no"
+      placeholder="Enter P.O. Number"
+    />
+
+    <label>Supplier Code:</label>
+    <input
+      type="text"
+      [(ngModel)]="supplier.supplier_code"
+      placeholder="Enter Supplier Code"
+    />
+
+    <label>PAN Number:</label>
+    <input
+      type="text"
+      [(ngModel)]="supplier.pan"
+      placeholder="Enter PAN Number"
+    />
+
+    <button (click)="addOrUpdateSupplier()">
+      {{ editingIndex !== null ? "Update" : "Add" }} Supplier
+    </button>
+  </div>
+
+  <h3>Supplier List</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Supplier Name</th>
+        <th>Address</th>
+        <th>GST Number</th>
+        <th>State</th>
+        <th>State Code</th>
+        <th>Phone Number</th>
+        <th>P.O. Number</th>
+        <th>Supplier Code</th>
+        <th>PAN Number</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let e of suppliers; let i = index">
+        <td>{{ e.supplier_name }}</td>
+        <td>{{ e.address }}</td>
+        <td>{{ e.gst_number }}</td>
+        <td>{{ e.state }}</td>
+        <td>{{ e.state_code }}</td>
+        <td>{{ e.phone_number }}</td>
+        <td>{{ e.p_no }}</td>
+        <td>{{ e.supplier_code }}</td>
+        <td>{{ e.pan }}</td>
+        <td>
+          <button class="edit-btn" (click)="editSupplier(i)">Edit</button>
+          <button class="delete-btn" (click)="deleteSupplier(i)">Delete</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p *ngIf="suppliers.length === 0">No suppliers added yet.</p>
+</div>

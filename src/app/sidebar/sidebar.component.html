@@ -36,10 +36,31 @@
       <span>Billing</span>
     </button>
 
-    <button mat-button class="menu-button text-white" routerLink="/add-vendor">
+    <!-- Angular Material Dropdown -->
+    <button
+      mat-button
+      class="menu-button text-white"
+      [matMenuTriggerFor]="vendorMenu"
+    >
+      <!-- <mat-icon>people</mat-icon> -->
+      <span>Select</span>
+      <mat-icon>arrow_drop_down</mat-icon>
+    </button>
+    <mat-menu #vendorMenu="matMenu">
+      <button mat-menu-item class="drop" routerLink="/add-vendor">
+        <mat-icon class="drop">people</mat-icon>
+        <span class="drop">Vendor</span>
+      </button>
+      <button class="drop" mat-menu-item routerLink="/supplier">
+        <mat-icon class="drop">people</mat-icon>
+        <span class="drop">Supplier</span>
+      </button>
+    </mat-menu>
+
+    <!-- <button mat-button class="menu-button text-white" routerLink="/add-vendor">
       <mat-icon>people</mat-icon>
       <span>Vendor</span>
-    </button>
+    </button> -->
 
     <button mat-button class="menu-button text-white" routerLink="/setting">
       <mat-icon>settings</mat-icon>

@@ -1,82 +1,284 @@
 <div class="container">
-  <h2>Jal Employee Registration Form</h2>
-  <h3>Personal Details</h3>
-  <div class="form-grid">
-    <div class="form-group">
-      <label>Full Name</label>
-      <input type="text" placeholder="Enter full name" />
+  <h2>Staff {{ showForm ? "Registration Form" : "List" }}</h2>
+
+  <div
+    style="
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    "
+  >
+    <div style="display: flex; align-items: center">
+      <i
+        class="fas fa-search"
+        style="cursor: pointer; margin-right: 5px"
+        (click)="toggleSearchInput()"
+      ></i>
+      <input
+        type="text"
+        *ngIf="showSearchInput"
+        placeholder="Search by Name or Phone"
+        [(ngModel)]="searchTerm"
+        (input)="searchStaff()"
+        style="
+          padding: 10px;
+          border: 1px solid #ccc;
+          border-radius: 5px;
+          font-size: 16px;
+          width: 300px;
+          transition: border-color 0.3s;
+        "
+      />
     </div>
-    <div class="form-group">
-      <label>Date of Birth</label>
-      <input type="date" />
-    </div>
-    <div class="form-group">
-      <label>Gender</label>
-      <select>
-        <option>Male</option>
-        <option>Female</option>
-        <option>Other</option>
-      </select>
-    </div>
-    <div class="form-group">
-      <label>Phone Number</label>
-      <input type="text" placeholder="Enter phone number" />
-    </div>
-    <div class="form-group full-width">
-      <label>Email</label>
-      <input type="email" placeholder="Enter email" />
-    </div>
+    <button (click)="toggleForm()">
+      {{ showForm ? "Hide Form" : "Create New Staff" }}
+    </button>
   </div>
 
-  <h3>Job Details</h3>
-  <div class="form-grid">
-    <div class="form-group">
-      <label>Designation</label>
-      <input type="text" placeholder="Enter designation" />
-    </div>
-    <div class="form-group">
-      <label>Department</label>
-      <input type="text" placeholder="Enter department" />
-    </div>
-    <div class="form-group">
-      <label>Date of Joining</label>
-      <input type="date" />
-    </div>
-    <div class="form-group">
-      <label>Salary</label>
-      <input type="number" placeholder="Enter salary" />
-    </div>
+  <div *ngIf="!showForm">
+    <table
+      *ngIf="filteredStaffList.length > 0"
+      style="width: 100%; border-collapse: collapse; margin-bottom: 20px"
+    >
+      <thead>
+        <tr>
+          <th style="border: 1px solid #ddd; padding: 8px; text-align: left">
+            Full Name
+          </th>
+          <th style="border: 1px solid #ddd; padding: 8px; text-align: left">
+            Designation
+          </th>
+          <th style="border: 1px solid #ddd; padding: 8px; text-align: left">
+            Email
+          </th>
+          <th style="border: 1px solid #ddd; padding: 8px; text-align: left">
+            Phone
+          </th>
+          <th style="border: 1px solid #ddd; padding: 8px; text-align: left">
+            Actions
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let staff of filteredStaffList; let i = index">
+          <td style="border: 1px solid #ddd; padding: 8px">
+            {{ staff.full_name }}
+          </td>
+          <td style="border: 1px solid #ddd; padding: 8px">
+            {{ staff.designation }}
+          </td>
+          <td style="border: 1px solid #ddd; padding: 8px">
+            {{ staff.email }}
+          </td>
+          <td style="border: 1px solid #ddd; padding: 8px">
+            {{ staff.phone_number }}
+          </td>
+          <td style="border: 1px solid #ddd; padding: 8px; text-align: center">
+            <i
+              class="fas fa-edit"
+              style="cursor: pointer; margin-right: 10px"
+              (click)="editStaff(i)"
+            ></i>
+            <i
+              class="fas fa-trash-alt"
+              style="cursor: pointer; color: red"
+              (click)="deleteStaff(i)"
+            ></i>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <p *ngIf="filteredStaffList.length === 0">No staff records found.</p>
   </div>
 
-  <h3>Bank Details</h3>
-  <div class="form-grid">
-    <div class="form-group">
-      <label>Bank Name</label>
-      <input type="text" placeholder="Enter bank name" />
-    </div>
-    <div class="form-group">
-      <label>Account Number</label>
-      <input type="text" placeholder="Enter account number" />
-    </div>
-  </div>
-  <h3>Documents</h3>
-  <div class="form-grid">
-    <div class="form-group">
-      <label>Aadhar Card Number</label>
-      <input type="text" placeholder="Enter Aadhar number" />
-    </div>
-    <div class="form-group">
-      <label>PAN Card Number</label>
-      <input type="text" placeholder="Enter PAN number" />
-    </div>
-    <div class="form-group full-width">
-      <label>Upload Photo</label>
-      <input type="file" accept="image/" (change)="previewPhoto($event)" />
-      <div class="photo-preview" *ngIf="photoURL">
-        <img [src]="photoURL" alt="Photo Preview" />
+  <div *ngIf="showForm" [formGroup]="registrationForm">
+    <h3>
+      {{
+        editingStaffIndex !== null
+          ? "Edit Staff"
+          : "Jal Employee Registration Form"
+      }}
+    </h3>
+    <div class="form-grid">
+      <div class="form-group">
+        <label for="fullName">Full Name</label>
+        <input
+          type="text"
+          id="fullName"
+          formControlName="full_name"
+          placeholder="Enter full name"
+        />
+        <div
+          *ngIf="
+            registrationForm.get('fullName')?.invalid &&
+            (registrationForm.get('fullName')?.dirty ||
+              registrationForm.get('fullName')?.touched)
+          "
+        >
+          <small class="error">Full Name is required.</small>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="dateOfBirth">Date of Birth</label>
+        <input type="date" id="dateOfBirth" formControlName="date_of_birth" />
+      </div>
+      <div class="form-group">
+        <label for="gender">Gender</label>
+        <select id="gender" formControlName="gender">
+          <option value="Male">Male</option>
+          <option value="Female">Female</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="phoneNumber">Phone Number</label>
+        <input
+          type="text"
+          id="phoneNumber"
+          formControlName="phone_number"
+          placeholder="Enter phone number"
+        />
+        <div
+          *ngIf="
+            registrationForm.get('phoneNumber')?.invalid &&
+            (registrationForm.get('phoneNumber')?.dirty ||
+              registrationForm.get('phoneNumber')?.touched)
+          "
+        >
+          <small class="error">Invalid phone number.</small>
+        </div>
+      </div>
+      <div class="form-group full-width">
+        <label for="email">Email</label>
+        <input
+          type="email"
+          id="email"
+          formControlName="email"
+          placeholder="Enter email"
+        />
+        <div
+          *ngIf="
+            registrationForm.get('email')?.invalid &&
+            (registrationForm.get('email')?.dirty ||
+              registrationForm.get('email')?.touched)
+          "
+        >
+          <small class="error">Invalid email format.</small>
+        </div>
       </div>
     </div>
-  </div>
 
-  <button>Submit</button>
+    <h3>Job Details</h3>
+    <div class="form-grid">
+      <div class="form-group">
+        <label for="designation">Designation</label>
+        <input
+          type="text"
+          id="designation"
+          formControlName="designation"
+          placeholder="Enter designation"
+        />
+      </div>
+      <div class="form-group">
+        <label for="department">Department</label>
+        <input
+          type="text"
+          id="department"
+          formControlName="department"
+          placeholder="Enter department"
+        />
+      </div>
+      <div class="form-group">
+        <label for="dateOfJoining">Date of Joining</label>
+        <input
+          type="date"
+          id="dateOfJoining"
+          formControlName="date_of_joining"
+        />
+      </div>
+      <div class="form-group">
+        <label for="salary">Salary</label>
+        <input
+          type="number"
+          id="salary"
+          formControlName="salary"
+          placeholder="Enter salary"
+        />
+        <div
+          *ngIf="
+            registrationForm.get('salary')?.invalid &&
+            (registrationForm.get('salary')?.dirty ||
+              registrationForm.get('salary')?.touched)
+          "
+        >
+          <small class="error">Salary must be a positive number.</small>
+        </div>
+      </div>
+    </div>
+
+    <h3>Bank Details</h3>
+    <div class="form-grid">
+      <div class="form-group">
+        <label for="bankName">Bank Name</label>
+        <input
+          type="text"
+          id="bankName"
+          formControlName="bank_name"
+          placeholder="Enter bank name"
+        />
+      </div>
+      <div class="form-group">
+        <label for="accountNumber">Account Number</label>
+        <input
+          type="text"
+          id="accountNumber"
+          formControlName="account_number"
+          placeholder="Enter account number"
+        />
+      </div>
+      <div class="form-group">
+        <label for="ifcCode">IFC Code</label>
+        <input
+          type="text"
+          id="ifcCode"
+          formControlName="ifsc_code"
+          placeholder="Enter IFC code"
+        />
+      </div>
+    </div>
+    <h3>Documents</h3>
+    <div class="form-grid">
+      <div class="form-group">
+        <label for="aadharCardNumber">Aadhar Card Number</label>
+        <input
+          type="text"
+          id="aadharCardNumber"
+          formControlName="aadhar_card_number"
+          placeholder="Enter Aadhar number"
+        />
+      </div>
+      <div class="form-group">
+        <label for="panCardNumber">PAN Card Number</label>
+        <input
+          type="text"
+          id="panCardNumber"
+          formControlName="pan_card_number"
+          placeholder="Enter PAN number"
+        />
+      </div>
+      <div class="form-group full-width">
+        <label for="photo">Upload Photo</label>
+        <input type="file" id="photo" (change)="onFileSelected($event)" />
+        <div class="photo-preview" *ngIf="photoURL">
+          <img [src]="photoURL" alt="Photo Preview" />
+        </div>
+      </div>
+    </div>
+
+    <button type="button" (click)="addStaff()">
+      {{ editingStaffIndex !== null ? "Update Staff" : "Submit" }}
+    </button>
+    <button type="button" (click)="toggleForm()">Cancel</button>
+  </div>
 </div>

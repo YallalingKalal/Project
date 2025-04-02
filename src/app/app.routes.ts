@@ -9,6 +9,7 @@ import { SettingComponent } from './setting/setting.component';
 import { LoginComponent } from './login/login.component';
 import { authGuard } from './guard/auth.guard';
 import { AddVendorComponent } from './add-vendor/add-vendor.component';
+import { SupplierComponent } from './supplier/supplier.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -25,6 +26,7 @@ export const routes: Routes = [
       { path: 'billing', component: BillingComponent },
       { path: 'staff', component: StaffComponent },
       { path: 'add-vendor', component: AddVendorComponent },
+      { path: 'supplier', component: SupplierComponent },
       { path: 'setting', component: SettingComponent },
     ],
   },
