@@ -110,6 +110,7 @@ export class StaffComponent implements OnInit {
           this.staffList[this.editingStaffIndex!] = updatedStaff;
           this.filteredStaffList = [...this.staffList];
           this.registrationForm.reset();
+          this.loadStaff();
           this.photoURL = null;
           this.showForm = false;
           this.editingStaffIndex = null;
@@ -120,6 +121,7 @@ export class StaffComponent implements OnInit {
           this.staffList.push(newStaff);
           this.filteredStaffList = [...this.staffList];
           this.registrationForm.reset();
+          this.loadStaff();
           this.photoURL = null;
           this.showForm = false;
         });

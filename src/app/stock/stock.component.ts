@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgForm } from '@angular/forms';
 import { ProductsService, Product } from '../services/products.service';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-stock',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, MatIconModule],
   templateUrl: './stock.component.html',
   styleUrls: ['./stock.component.css'],
 })
@@ -17,7 +18,7 @@ export class StockComponent implements OnInit {
   editingIndex: number | null = null;
 
   newStock: Product = {
-    name: '',
+    description: '',
     supplier: '',
     price: 0,
     hsn_code: '',
@@ -37,8 +38,8 @@ export class StockComponent implements OnInit {
     this.productsService.getProducts().subscribe({
       next: (response: any) => {
         // Use 'any' for flexibility with API response
-        if (response && response.all_stock) {
-          this.productList = response.all_stock.map((product: Product) => ({
+        if (response && response) {
+          this.productList = response.map((product: Product) => ({
             ...product,
             quantity: product.quantity ?? 1, // Set default quantity to 1 if missing
             total: product.total ?? product.price, // Set default total to price if missing
@@ -53,9 +54,9 @@ export class StockComponent implements OnInit {
   }
 
   // Add a new stock item via the API
-  addNewStock(): void {
+  addNewStock(form: NgForm): void {
     if (
-      this.newStock.name &&
+      this.newStock.description &&
       this.newStock.price > 0 &&
       this.newStock.hsn_code
     ) {
@@ -67,14 +68,30 @@ export class StockComponent implements OnInit {
 
       this.productsService.addProduct(newProduct).subscribe({
         next: () => {
-          this.loadProducts(); // Reloads the latest data from API
-          // this.resetNewStockForm(); // Reset form fields
-          this.showAddStockForm = false; // Hide form after submission
+          this.loadProducts(); // Reload products
+          this.showAddStockForm = false; // Hide the form
+          // Reset the form and the model
+          this.newStock = {
+            description: '',
+            supplier: '',
+            price: 0,
+            hsn_code: '',
+            quantity: 0,
+            total: 0,
+            stock_type: 'Parent',
+          };
+          form.resetForm({
+            stock_type: 'Parent', // Keep default
+          });
         },
         error: (err) => console.error('Error adding product:', err),
       });
     }
   }
+
+  // resetNewStockForm(){
+  //   this.showAddStockForm.reset();
+  // }
 
   // Filter products based on type
   filterProductList(type: string): void {

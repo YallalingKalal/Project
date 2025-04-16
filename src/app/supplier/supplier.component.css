@@ -1,168 +1,234 @@
-/* Existing CSS for the form */
+/* Main Container Styles */
 .add-vendor {
-  width: 80%;
-  margin: 20px auto;
-  padding: 20px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  background: #f9f9f9;
-  max-height: 90vh;
-  overflow-y: auto;
+  max-width: 1400px;
+  margin: 2rem auto;
+  padding: 2.5rem;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
 }
 
-/* Adjusted CSS for Back button and Heading alignment */
 .add-vendor-header {
-  display: flex;
-  justify-content: space-between; /* Keep space between */
-  align-items: center;
-  margin-bottom: 15px;
+  margin-bottom: 2.5rem;
+  border-bottom: 3px solid #3498db;
+  padding-bottom: 1rem;
 }
 
-.add-vendor-header h2 {
-  text-align: center; /* Keep heading in center */
+h2 {
+  color: #2c3e50;
+  font-size: 2.2rem;
+  font-weight: 600;
   margin: 0;
-  flex-grow: 1; /* Allow heading to take up remaining space */
 }
 
-.back-button {
-  padding: 8px 15px;
-  background-color: #f0f0f0;
-  color: black;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 1em;
-  width: auto; /* Adjust width to content */
-  margin-right: 15px; /* Add some right margin */
+h3 {
+  color: #34495e;
+  font-size: 1.5rem;
+  margin: 2rem 0;
 }
 
-.back-button:hover {
-  background-color: #e0e0e0;
-}
-
+/* Form Container Styles */
 .form-container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 1.5rem;
+  background: #f8fafc;
+  padding: 2rem;
+  border-radius: 12px;
+  margin-bottom: 2rem;
 }
 
-.form-container label {
+label {
+  display: block;
+  color: #2c3e50;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+  font-size: 0.95rem;
+}
+
+input {
   width: 100%;
-  font-weight: bold;
-  margin-bottom: 5px;
+  padding: 12px 16px;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+  background: white;
 }
 
-.form-container input,
-.form-container select {
-  width: 100%;
-  padding: 8px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  box-sizing: border-box;
-  margin-bottom: 10px;
+input:focus {
+  border-color: #3498db;
+  box-shadow: 0 0 0 4px rgba(52, 152, 219, 0.15);
+  outline: none;
 }
 
-/* Button style - consistent with other buttons */
+input::placeholder {
+  color: #94a3b8;
+}
+
+/* Button Styles */
 button {
-  width: 100%;
-  padding: 10px;
-  margin-top: 15px;
-  background: #343a40;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-button:hover {
-  background: black;
-}
-
-table {
-  width: 100%;
-  margin-top: 20px;
-  border-collapse: collapse;
-}
-
-table,
-th,
-td {
-  border: 1px solid #ccc;
-}
-
-th,
-td {
-  padding: 10px;
-  text-align: left;
-}
-
-th {
-  background: #343a40;
-  color: white;
-}
-
-tbody tr:nth-child(even) {
-  background: #f2f2f2;
-}
-
-/* Action Buttons */
-.edit-btn {
-  background: #ffc107;
-  color: black;
-  padding: 5px 10px;
-  margin-right: 5px;
-  border: none;
-  cursor: pointer;
-}
-
-.edit-btn:hover {
-  background: #e0a800;
-}
-
-.delete-btn {
-  background: #dc3545;
-  color: white;
-  padding: 5px 10px;
-  border: none;
-  cursor: pointer;
-}
-
-.delete-btn:hover {
-  background: #c82333;
-}
-
-.no-data {
-  text-align: center;
-  font-size: 16px;
-  color: #777;
-  margin-top: 10px;
-}
-
-/* CSS for the initial button screen */
-.main-container {
-  background-color: white; /* Changed background to white */
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.button-container {
-  display: flex;
-  gap: 20px;
-}
-
-.button-container button {
-  padding: 15px 30px;
-  font-size: 1.2em;
-  background-color: #343a40; /* Using the same button color */
-  color: white;
+  padding: 12px 24px;
   border: none;
   border-radius: 8px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  font-size: 0.95rem;
 }
 
-.button-container button:hover {
-  background-color: black;
+.form-container button {
+  background: #3498db;
+  color: white;
+  grid-column: 1 / -1;
+  width: fit-content;
+  margin-top: 1rem;
+}
+
+.form-container button:hover {
+  background: #2980b9;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(52, 152, 219, 0.25);
+}
+
+/* Table Styles */
+table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin-top: 1rem;
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+}
+
+thead {
+  background: #3498db;
+  color: white;
+}
+
+th {
+  padding: 1.2rem 1rem;
+  text-align: left;
+  font-weight: 500;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+td {
+  padding: 1rem;
+  border-bottom: 1px solid #e2e8f0;
+  color: #4a5568;
+  font-size: 0.95rem;
+}
+
+tbody tr:hover {
+  background-color: #f8fafc;
+}
+
+/* Action Buttons */
+.edit-btn,
+.delete-btn {
+  padding: 8px 16px;
+  margin: 0 4px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+}
+
+.edit-btn {
+  background: #f39c12;
+  color: white;
+}
+
+.edit-btn:hover {
+  background: #d68910;
+}
+
+.delete-btn {
+  background: #e74c3c;
+  color: white;
+}
+
+.delete-btn:hover {
+  background: #c0392b;
+}
+
+/* Empty State Message */
+p {
+  text-align: center;
+  color: #64748b;
+  font-size: 1.1rem;
+  margin: 2rem 0;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .add-vendor {
+    margin: 1rem;
+    padding: 1.5rem;
+  }
+
+  .form-container {
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  h2 {
+    font-size: 1.8rem;
+  }
+
+  .form-container {
+    grid-template-columns: 1fr;
+    padding: 1.5rem;
+  }
+
+  table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  th,
+  td {
+    padding: 0.8rem;
+  }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #3498db;
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #2980b9;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.add-vendor {
+  animation: fadeIn 0.5s ease-out;
 }

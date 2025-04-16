@@ -1,11 +1,7 @@
 <div class="invoice-container professional-invoice">
   <div class="invoice-header">
     <div>
-      <h2>Invoice</h2>
-    </div>
-    <div>
-      <p>Company Name: JAL ENTERPRISES</p>
-      <p>GST No: 27AJXPJ8712G1ZP</p>
+      <h2>Tax Invoice</h2>
     </div>
   </div>
   <div class="general-info">
@@ -14,39 +10,33 @@
         <label for="vendorName">Vendor Name:</label>
         <select
           id="vendorName"
-          [(ngModel)]="invoiceData.companyName"
-          (change)="onVendorSelected(invoiceData.companyName)"
+          [(ngModel)]="selectedVendor"
+          (ngModelChange)="onVendorChange($event)"
         >
-          <option value="">Select Vendor</option>
-          <option *ngFor="let vendor of vendors" [value]="vendor.name">
-            {{ vendor.name }}
+          <option *ngFor="let item of vendorsArray" [ngValue]="item">
+            {{ item.vendor_name }}
           </option>
         </select>
       </div>
+
       <div class="form-row">
         <label for="gstNo">GST No.:</label>
-        <input
-          type="text"
-          id="gstNo"
-          [(ngModel)]="invoiceData.gstNo"
-          [readonly]="true"
-        />
+        <input type="text" id="gstNo" [(ngModel)]="invoiceData.gst_no" />
       </div>
       <div class="form-row">
         <label for="consignee">Consignee:</label>
         <input
           type="text"
           id="consignee"
-          [(ngModel)]="invoiceData.consignee"
-          [readonly]="true"
+          [(ngModel)]="invoiceData.consignee_name"
         />
       </div>
       <div class="form-row">
-        <label for="customerName">Customer Name:</label>
+        <label for="consigneeStateCode">Consignee State Code:</label>
         <input
           type="text"
-          id="customerName"
-          [(ngModel)]="invoiceData.customerName"
+          id="consigneeStateCode"
+          [(ngModel)]="invoiceData.consignee_state_code"
         />
       </div>
       <div class="form-row">
@@ -54,7 +44,7 @@
         <textarea
           id="customerAddress"
           rows="2"
-          [(ngModel)]="invoiceData.customerAddress"
+          [(ngModel)]="invoiceData.consignee_address"
         ></textarea>
       </div>
       <div class="form-row">
@@ -65,174 +55,271 @@
           [(ngModel)]="invoiceData.remarks"
         ></textarea>
       </div>
-      <div class="form-row">
-        <input
-          type="checkbox"
-          id="inclusive"
-          [(ngModel)]="invoiceData.inclusive"
-        />
-        <label for="inclusive">Inclusive</label>
-        <label for="copies">Copies</label>
-        <input type="number" id="copies" [(ngModel)]="invoiceData.copies" />
-        <button (click)="updateInvoice()">Update</button>
+      <div class="bank-details">
+        <h4>Bank Details</h4>
+        <div class="form-row">
+          <span>Bank Name:</span>
+          <span>MAHESH SAHAKARI BANK LTD.PUNE</span>
+        </div>
+        <div class="form-row">
+          <span>Branch:</span>
+          <span>SINHAGAD ROAD</span>
+        </div>
+        <div class="form-row">
+          <span>Account Number:</span>
+          <span>011130100000143</span>
+        </div>
+        <div class="form-row">
+          <span>IFSC Code:</span>
+          <span>MSBL0000011</span>
+        </div>
+      </div>
+      <div class="info-right">
+        <div class="form-row">
+          <label for="date">Invoice Date:</label>
+          <input type="date" id="date" [(ngModel)]="invoiceData.invoice_date" />
+        </div>
+        <div class="form-row">
+          <label for="challanNo">Challan No.:</label>
+          <input
+            type="text"
+            id="challanNo"
+            [(ngModel)]="invoiceData.challan_number"
+          />
+        </div>
+        <div class="form-row">
+          <label for="challanNo">Challan Date:</label>
+          <input
+            type="date"
+            id="challanDate"
+            [(ngModel)]="invoiceData.challan_date"
+          />
+        </div>
+        <div class="form-row">
+          <label for="orderNo">Order No.:</label>
+          <input
+            type="text"
+            id="orderNo"
+            [(ngModel)]="invoiceData.order_number"
+          />
+        </div>
+        <div class="form-row">
+          <label for="orderDate">Order Date:</label>
+          <input
+            type="date"
+            id="orderDate"
+            [(ngModel)]="invoiceData.order_date"
+          />
+        </div>
+        <div class="form-row">
+          <label for="vehNo">Veh.No.:</label>
+          <input type="text" id="vehNo" [(ngModel)]="invoiceData.veh_no" />
+        </div>
+        <div class="form-row">
+          <label for="transportMode">Transport Mode:</label>
+          <select id="transportMode" [(ngModel)]="invoiceData.transport_mode">
+            <option value="road" selected>BY ROAD</option>
+            <option value="air">BY AIR</option>
+            <option value="sea">BY SEA</option>
+          </select>
+        </div>
+        <div class="form-row">
+          <label for="dueDate">Due On.:</label>
+          <input type="date" id="dueDate" [(ngModel)]="invoiceData.due_on" />
+        </div>
+        <div class="form-row">
+          <label for="timeOfSupply">Time of Supply:</label>
+          <input
+            type="text"
+            id="timeOfSupply"
+            [(ngModel)]="invoiceData.time_of_supply"
+          />
+        </div>
+        <div class="form-row">
+          <label for="paymentTerms">Payment Terms:</label>
+          <input
+            type="text"
+            id="paymentTerms"
+            [(ngModel)]="invoiceData.payment_terms"
+          />
+        </div>
+        <div class="form-row">
+          <label for="document">Document:</label>
+          <input type="text" id="document" [(ngModel)]="invoiceData.document" />
+        </div>
+        <div class="form-row">
+          <label for="deliveryTerms">Delivery Terms:</label>
+          <input
+            type="text"
+            id="deliveryTerms"
+            [(ngModel)]="invoiceData.delivery_terms"
+          />
+        </div>
+        <div class="form-row">
+          <label for="transport">Transport:</label>
+          <input
+            type="text"
+            id="transport"
+            [(ngModel)]="invoiceData.transport"
+          />
+        </div>
+        <div class="form-row">
+          <label for="placeOfSupply">Place Of Supply:</label>
+          <input
+            type="text"
+            id="placeOfSupply"
+            [(ngModel)]="invoiceData.place_of_supply"
+          />
+        </div>
+        <div class="form-row">
+          <label for="lrNo">L.R. No.:</label>
+          <input type="text" id="lrNo" [(ngModel)]="invoiceData.l_r_number" />
+        </div>
+        <div class="form-row">
+          <label for="lrDate">L.R. Date:</label>
+          <input type="date" id="lrDate" [(ngModel)]="invoiceData.l_r_date" />
+        </div>
+        <div class="form-row">
+          <label for="ref">Ref:</label>
+          <input type="text" id="ref" [(ngModel)]="invoiceData.ref" />
+        </div>
       </div>
     </div>
-    <div class="info-right">
-      <div class="form-row">
-        <label for="invoiceNo">Invoice No.:</label>
-        <input
-          type="text"
-          id="invoiceNo"
-          [(ngModel)]="invoiceData.invoiceNumber"
-        />
-      </div>
-      <div class="form-row">
-        <label for="date">Date:</label>
-        <input type="date" id="date" [(ngModel)]="invoiceData.invoiceDate" />
-      </div>
-      <div class="form-row">
-        <label for="challanNo">Challan No.:</label>
-        <input type="text" id="challanNo" [(ngModel)]="invoiceData.challanNo" />
-      </div>
-      <div class="form-row">
-        <label for="orderDate">Order Date:</label>
-        <input type="date" id="orderDate" [(ngModel)]="invoiceData.orderDate" />
-      </div>
-      <div class="form-row">
-        <label for="orderNo">Order No.:</label>
-        <input type="text" id="orderNo" [(ngModel)]="invoiceData.orderNo" />
-      </div>
-      <div class="form-row">
-        <label for="vehNo">Veh.No.:</label>
-        <input type="text" id="vehNo" [(ngModel)]="invoiceData.vehNo" />
-      </div>
-      <div class="form-row">
-        <label for="transportMode">Transport Mode:</label>
-        <select id="transportMode" [(ngModel)]="invoiceData.transportMode">
-          <option value="BY ROAD">BY ROAD</option>
-          <option value="BY AIR">BY AIR</option>
-          <option value="BY SEA">BY SEA</option>
-        </select>
-      </div>
-      <div class="form-row">
-        <label for="dueDate">Due On.:</label>
-        <input type="date" id="dueDate" [(ngModel)]="invoiceData.dueDate" />
-      </div>
-      <div class="form-row">
-        <label for="timeOfSupply">Time of Supply:</label>
-        <input
-          type="text"
-          id="timeOfSupply"
-          [(ngModel)]="invoiceData.timeOfSupply"
-        />
-      </div>
-      <div class="form-row">
-        <label for="paymentTerms">Payment Terms:</label>
-        <input
-          type="text"
-          id="paymentTerms"
-          [(ngModel)]="invoiceData.paymentTerms"
-        />
-      </div>
-      <div class="form-row">
-        <label for="document">Document:</label>
-        <input type="text" id="document" [(ngModel)]="invoiceData.document" />
-      </div>
-      <div class="form-row">
-        <label for="deliveryTerms">Delivery Terms:</label>
-        <input
-          type="text"
-          id="deliveryTerms"
-          [(ngModel)]="invoiceData.deliveryTerms"
-        />
-      </div>
-      <div class="form-row">
-        <label for="transport">Transport:</label>
-        <input type="text" id="transport" [(ngModel)]="invoiceData.transport" />
-      </div>
-      <div class="form-row">
-        <label for="placeOfSupply">Place Of Supply:</label>
-        <input
-          type="text"
-          id="placeOfSupply"
-          [(ngModel)]="invoiceData.placeOfSupply"
-        />
-      </div>
-      <div class="form-row">
-        <label for="lrNo">L.R. No.:</label>
-        <input type="text" id="lrNo" [(ngModel)]="invoiceData.lrNo" />
-      </div>
-      <div class="form-row">
-        <label for="lrDate">L.R. Date:</label>
-        <input type="date" id="lrDate" [(ngModel)]="invoiceData.lrDate" />
-      </div>
-      <div class="form-row">
-        <label for="ref">Ref:</label>
-        <input type="text" id="ref" [(ngModel)]="invoiceData.ref" />
-      </div>
+    <div class="line-items">
+      <table>
+        <thead>
+          <tr>
+            <th>Description</th>
+            <th>HSN / SAC</th>
+            <th>Quantity</th>
+            <th>Unit Price</th>
+            <th>Discount %</th>
+            <th>GST</th>
+            <th>CGST</th>
+            <th>SGST</th>
+            <th>IGST</th>
+            <th>Net Amount</th>
+            <th>Total</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of invoiceData.items; let i = index">
+            <td>
+              <select
+                [(ngModel)]="item.description"
+                (ngModelChange)="onDescriptionChange(item)"
+              >
+                <!-- <option [ngValue]="null">-- Select Product --</option> -->
+                <option
+                  *ngFor="let description of descriptionsArray"
+                  [ngValue]="description.description"
+                >
+                  {{ description.description }}
+                </option>
+              </select>
+            </td>
+            <td><input type="text" [(ngModel)]="item.hsn_code" /></td>
+            <td><input type="number" [(ngModel)]="item.quantity" /></td>
+            <td><input type="number" [(ngModel)]="item.unit_rate" /></td>
+            <td>
+              <input type="number" [(ngModel)]="item.discount_percentage" />
+            </td>
+
+            <!-- GST Rate Dropdown -->
+            <td>
+              <select [(ngModel)]="item.gst_rate">
+                <option [value]="0">0%</option>
+                <option [value]="2.5">2.5%</option>
+                <option [value]="5">5%</option>
+                <option [value]="9">9%</option>
+                <option [value]="12">12%</option>
+                <option [value]="18">18%</option>
+                <option [value]="24">24%</option>
+              </select>
+            </td>
+
+            <!-- CGST Dropdown -->
+            <td>
+              <select [(ngModel)]="item.cgst">
+                <option [value]="0">0%</option>
+                <option [value]="2.5">2.5%</option>
+                <option [value]="5">5%</option>
+                <option [value]="9">9%</option>
+                <option [value]="12">12%</option>
+                <option [value]="18">18%</option>
+                <option [value]="24">24%</option>
+              </select>
+              <!-- <div>₹ {{ calculateGSTAmount(item, item.cgst) | number:'1.2-2' }}</div> -->
+            </td>
+
+            <!-- SGST Dropdown -->
+            <td>
+              <select [(ngModel)]="item.sgst">
+                <option [value]="0">0%</option>
+                <option [value]="2.5">2.5%</option>
+                <option [value]="5">5%</option>
+                <option [value]="9">9%</option>
+                <option [value]="12">12%</option>
+                <option [value]="18">18%</option>
+                <option [value]="24">24%</option>
+              </select>
+              <!-- <div>₹ {{ calculateGSTAmount(item, item.sgst) | number:'1.2-2' }}</div> -->
+            </td>
+
+            <!-- IGST Dropdown -->
+            <td>
+              <select [(ngModel)]="item.igst">
+                <option [value]="0">0%</option>
+                <option [value]="2.5">2.5%</option>
+                <option [value]="5">5%</option>
+                <option [value]="9">9%</option>
+                <option [value]="12">12%</option>
+                <option [value]="18">18%</option>
+                <option [value]="24">24%</option>
+              </select>
+              <!-- <div>₹ {{ calculateGSTAmount(item, item.cgst || 0) | number:'1.2-2' }}</div> -->
+            </td>
+
+            <td>
+              <span>{{ calculateNetAmount(item) | number : "1.2-2" }}</span>
+            </td>
+
+            <td>
+              <span>{{ calculateLineItemTotal(item) | number : "1.2-2" }}</span>
+            </td>
+
+            <td>
+              <button mat-icon-button class="btn" (click)="removeLineItem(i)">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </td>
+          </tr>
+          <tr>
+           
+          </tr>
+          
+          <tr>
+            
+            <td colspan="3" class="add-product-row">
+              <button class="add-line-item" (click)="addLineItem()">
+                Add Product
+              </button>
+            </td>
+            <td colspan="7" style="text-align: right;"><strong>Grand Total:</strong></td>
+            <td><strong>₹{{ calculateInvoiceTotal() | number: '1.2-2' }}</strong></td>
+          </tr>
+        </tbody>
+      </table>
     </div>
-  </div>
-  <div class="line-items">
-    <table>
-      <thead>
-        <tr>
-          <th>Description</th>
-          <th>HSN / SAC</th>
-          <th>Quantity</th>
-          <th>Unit Price</th>
-          <th>Discount %</th>
-          <th>GST Rate %</th>
-          <th>CGST</th>
-          <th>SGST</th>
-          <th>IGST</th>
-          <th>Net Amount</th>
-          <th>Total</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let item of invoiceData.lineItems; let i = index">
-          <td><input type="text" [(ngModel)]="item.description" /></td>
-          <td><input type="text" [(ngModel)]="item.hsnSac" /></td>
-          <td><input type="number" [(ngModel)]="item.quantity" /></td>
-          <td><input type="number" [(ngModel)]="item.unitPrice" /></td>
-          <td><input type="number" [(ngModel)]="item.discountPercentage" /></td>
-          <td><input type="number" [(ngModel)]="item.gstRate" /></td>
-          <td>
-            <span>{{ calculateCGST(item) | number : "1.2-2" }}</span>
-          </td>
-          <td>
-            <span>{{ calculateSGST(item) | number : "1.2-2" }}</span>
-          </td>
-          <td>
-            <span>{{ calculateIGST(item) | number : "1.2-2" }}</span>
-          </td>
-          <td>
-            <span>{{ calculateNetAmount(item) | number : "1.2-2" }}</span>
-          </td>
-          <td>
-            <span>{{ calculateLineItemTotal(item) | number : "1.2-2" }}</span>
-          </td>
-          <td>
-            <button class="delete-button" (click)="removeLineItem(i)">
-              Delete
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-    <button class="add-line-item" (click)="addLineItem()">Add Line Item</button>
-  </div>
-  <div class="invoice-footer">
-    <div class="footer-left">
-      <button (click)="changeSomething()">Change</button>
-      <button (click)="printInvoice()">Print</button>
-      <button (click)="generateChallan()">Challan</button>
-    </div>
-    <div class="footer-right">
-      <span>Total: {{ calculateInvoiceTotal() | number : "1.2-2" }}</span>
-      <button class="ok-button" (click)="submitForm()">OK</button>
-      <button class="cancel-button" (click)="cancelForm()">Cancel</button>
+    <div class="invoice-footer">
+      <div class="footer-left">
+        <!-- <button (click)="printInvoice()">Print</button> -->
+      </div>
+      <div class="footer-right">
+        <button (click)="submitInvoice()">Submit Invoice</button>
+        <button routerLink="/all-invoices">Show All Records</button>
+      </div>
     </div>
   </div>
 </div>

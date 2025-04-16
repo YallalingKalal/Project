@@ -1,0 +1,86 @@
+.invoice-list {
+  padding: 2rem;
+  background: #f8f9fa;
+  border-radius: 8px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+  color: #2c3e50;
+  margin-bottom: 1.5rem;
+  font-weight: 600;
+  font-size: 1.8rem;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+thead {
+  background: #3498db;
+  color: white;
+}
+
+th {
+  padding: 1rem;
+  text-align: left;
+  font-weight: 500;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+td {
+  padding: 1rem;
+  border-bottom: 1px solid #eee;
+  font-size: 0.9rem;
+  color: #444;
+}
+
+tbody tr:hover {
+  background-color: #f5f9ff;
+  transition: background-color 0.2s ease;
+}
+
+button {
+  padding: 0.5rem 1rem;
+  box-shadow: none;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.btn1 {
+  color: rgb(36, 133, 60);
+}
+
+.btn2 {
+  color: rgb(158, 40, 40);
+}
+
+/* button:hover {
+  background: #860505;
+} */
+
+/* Responsive design */
+@media (max-width: 1200px) {
+  .invoice-list {
+    padding: 1rem;
+  }
+
+  table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  td,
+  th {
+    padding: 0.75rem;
+  }
+}

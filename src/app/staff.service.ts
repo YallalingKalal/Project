@@ -26,10 +26,10 @@ export interface Staff {
   providedIn: 'root',
 })
 export class StaffService {
-  private baseApiUrl = 'http://192.168.0.210:8000/api';
+  private baseApiUrl = 'http://192.168.0.106:8000/api';
   private getApiUrl = `${this.baseApiUrl}/allstaff/`;
   private postApiUrl = `${this.baseApiUrl}/addstaff/`;
-  private updateApiUrl = `${this.baseApiUrl}/updatestaff/`;
+  private updateApiUrl = `${this.baseApiUrl}/updatestaff`;
   private deleteApiUrl = `${this.baseApiUrl}/deletestaff/`;
 
   constructor(private http: HttpClient) {}

@@ -19,36 +19,44 @@
 
   <!-- Add New Stock Form -->
   <div *ngIf="showAddStockForm" class="add-stock-form">
-    <h3>Add New Stock</h3>
-    <input
-      type="text"
-      placeholder="Name"
-      [(ngModel)]="newStock.name"
-      required
-    />
-    <input
-      type="text"
-      placeholder="Supplier Name"
-      [(ngModel)]="newStock.supplier"
-      required
-    />
-    <input
-      type="number"
-      placeholder="Price"
-      [(ngModel)]="newStock.price"
-      required
-    />
-    <input
-      type="text"
-      placeholder="HSN No"
-      [(ngModel)]="newStock.hsn_code"
-      required
-    />
-    <select [(ngModel)]="newStock.stock_type">
-      <option value="Parent">Parent</option>
-      <option value="Child">Child</option>
-    </select>
-    <button (click)="addNewStock()">Add Stock</button>
+    <form #form="ngForm" (ngSubmit)="addNewStock(form)">
+      <h3>Add New Stock</h3>
+
+      <input
+        type="text"
+        name="description"
+        placeholder="Name"
+        [(ngModel)]="newStock.description"
+        required
+      />
+      <input
+        type="text"
+        name="supplier"
+        placeholder="Supplier Name"
+        [(ngModel)]="newStock.supplier"
+        required
+      />
+      <input
+        type="number"
+        name="price"
+        placeholder="Price"
+        [(ngModel)]="newStock.price"
+        required
+      />
+      <input
+        type="text"
+        name="hsn_code"
+        placeholder="HSN No"
+        [(ngModel)]="newStock.hsn_code"
+        required
+      />
+      <select name="stock_type" [(ngModel)]="newStock.stock_type" required>
+        <option value="Parent">Parent</option>
+        <option value="Child">Child</option>
+      </select>
+
+      <button type="submit">Add Stock</button>
+    </form>
   </div>
 
   <!-- Table -->
@@ -78,10 +86,10 @@
             <input
               *ngIf="editingIndex === i"
               type="text"
-              [(ngModel)]="product.name"
+              [(ngModel)]="product.description"
               class="edit-input"
             />
-            <span *ngIf="editingIndex !== i">{{ product.name }}</span>
+            <span *ngIf="editingIndex !== i">{{ product.description }}</span>
           </td>
           <td>
             <input

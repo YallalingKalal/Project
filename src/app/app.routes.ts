@@ -10,6 +10,7 @@ import { LoginComponent } from './login/login.component';
 import { authGuard } from './guard/auth.guard';
 import { AddVendorComponent } from './add-vendor/add-vendor.component';
 import { SupplierComponent } from './supplier/supplier.component';
+import { AllRecordsComponent } from './all-records/all-records.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -17,7 +18,7 @@ export const routes: Routes = [
   {
     path: '',
     component: HeaderComponent,
-    canActivate: [authGuard],
+    // canActivate: [authGuard],
     children: [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       { path: 'dashboard', component: DashboardComponent },
@@ -28,6 +29,7 @@ export const routes: Routes = [
       { path: 'add-vendor', component: AddVendorComponent },
       { path: 'supplier', component: SupplierComponent },
       { path: 'setting', component: SettingComponent },
+      { path: 'all-invoices', component: AllRecordsComponent },
     ],
   },
 ];

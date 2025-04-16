@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 
 export interface Product {
   id?: number;
-  name: string;
+  description: string;
   price: number;
   supplier: string;
   hsn_code: string;
@@ -18,7 +18,7 @@ export interface Product {
 })
 export class ProductsService {
   // Define the base URL and specific endpoints for GET and POST
-  private baseApiUrl = 'http://192.168.0.229:8000/api';
+  private baseApiUrl = 'http://192.168.0.106:8000/api';
   private getApiUrl = `${this.baseApiUrl}/allstock/`;
   private postApiUrl = `${this.baseApiUrl}/addstock/`;
   private putApiUrl = `${this.baseApiUrl}/updatestock`;

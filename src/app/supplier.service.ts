@@ -19,12 +19,12 @@ export interface Supplier {
   providedIn: 'root',
 })
 export class SupplierService {
-  private baseApiUrl = 'http://192.168.0.229:8000/api';
-  private getApiUrl = `${this.baseApiUrl}/allsupplier`;
-  private postApiUrl = `${this.baseApiUrl}/addsupplier`;
+  private baseApiUrl = 'http://192.168.0.106:8000/api/';
+  private getApiUrl = `${this.baseApiUrl}allsupplier/`;
+  private postApiUrl = `${this.baseApiUrl}addsupplier/`;
   // Assuming that for update and delete, the supplier id is appended to the URL
-  private updateApiUrl = `${this.baseApiUrl}/updatesupplier`;
-  private deleteApiUrl = `${this.baseApiUrl}/deletesupplier`;
+  private updateApiUrl = `${this.baseApiUrl}updatesupplier/`;
+  private deleteApiUrl = `${this.baseApiUrl}deletesupplier/`;
 
   constructor(private http: HttpClient) {}
 

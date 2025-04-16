@@ -3,6 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-login',
@@ -19,34 +20,34 @@ export class LoginComponent {
 
   router = inject(Router);
   http = inject(HttpClient);
+  toastr: ToastrService = inject(ToastrService);
 
   onLogin() {
-    // Add validation
     if (!this.apiLoginObj.username || !this.apiLoginObj.password) {
-      alert('Please enter both username and password');
+      this.toastr.warning('Please enter both username and password', 'Validation');
       return;
     }
 
     this.http
-      .post<any>('http://192.168.0.229:8000/api/login/', this.apiLoginObj)
+      .post<any>('https://jal.beatsacademy.in/api/login/', this.apiLoginObj)
       .subscribe({
         next: (res) => {
           if (res.status === 'success' && res.token) {
-            // Store both token and userID
             localStorage.setItem('token', res.token);
             localStorage.setItem('userID', res.userID.toString());
 
-            alert('Login successful, redirecting...');
+            this.toastr.success('Login successful, redirecting...', 'Success');
             this.router.navigate(['/dashboard']);
           } else {
             console.error('Invalid response:', res);
-            alert('Login failed: Invalid response from server');
+            this.toastr.error('Login failed: Invalid response from server', 'Error');
           }
         },
         error: (error) => {
           console.error('Login error:', error);
-          alert('Login failed: ' + (error.error?.message || 'Unknown error'));
+          this.toastr.error(error.error?.message || 'Unknown error', 'Login Failed');
         },
       });
   }
+
 }
