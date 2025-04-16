@@ -19,14 +19,14 @@ export interface Vendor {
   providedIn: 'root',
 })
 export class VendorService {
-  private baseApiUrl = 'http://192.168.0.106:8000/api/';
+  private baseApiUrl = 'https://jal.beatsacademy.in/api/vendor/';
   private getApiUrl = `${this.baseApiUrl}allvendor/`;
   private postApiUrl = `${this.baseApiUrl}addvendor/`;
   // Assuming that for update and delete, the vendor id is appended to the URL
   private updateApiUrl = `${this.baseApiUrl}updatevendor/`;
   private deleteApiUrl = `${this.baseApiUrl}deletevendor/`;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   // GET all vendors
   getVendors(): Observable<Vendor[]> {

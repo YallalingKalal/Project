@@ -8,13 +8,21 @@
   height: 100vh;
   margin: 0;
 }
+/* Base styles */
+body,
+html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: "Poppins", sans-serif;
+  background: linear-gradient(to right, #2980b9, #6dd5fa);
+}
 
+/* Login wrapper and card */
 .login-wrapper {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
   width: 100%;
+  max-width: 400px;
+  padding: 1rem;
 }
 
 .login-card {
@@ -29,134 +37,93 @@
   transition: 0.3s ease-in-out;
 }
 
-h2 {
-  font-size: 24px;
-  margin-bottom: 20px;
-  color: black;
+.login-card:hover {
+  transform: translateY(-5px);
 }
 
+/* Heading */
+.login-card h2 {
+  margin-bottom: 1.5rem;
+  color: #2c3e50;
+  font-size: 1.8rem;
+  font-weight: 600;
+}
+
+/* Input groups */
 .input-group {
-  margin-bottom: 15px;
+  margin-bottom: 1.2rem;
   text-align: left;
 }
 
 .input-group label {
   display: block;
-  font-weight: bold;
-  margin-bottom: 5px;
-  font-size: 16px;
-  color: black;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: #34495e;
 }
 
 .input-group input {
   width: 100%;
-  padding: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.5);
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: 5px;
-  font-size: 16px;
-  color: black;
-  outline: none;
-  transition: 0.3s;
-}
-
-.input-group input::placeholder {
-  color: rgba(0, 0, 0, 0.7);
+  padding: 0.75rem;
+  border-radius: 0.75rem;
+  border: 1px solid #ccc;
+  transition: border-color 0.3s ease;
+  font-size: 1rem;
 }
 
 .input-group input:focus {
-  border-color: #ff9800;
+  border-color: #2980b9;
+  outline: none;
 }
 
+/* Login button */
 .login-btn {
   width: 100%;
-  padding: 14px;
-  background: #0091ff;
-  color: white;
+  padding: 0.9rem;
+  background-color: #2980b9;
+  color: #fff;
+  font-weight: bold;
   border: none;
-  border-radius: 5px;
-  font-size: 18px;
+  border-radius: 0.75rem;
+  font-size: 1rem;
   cursor: pointer;
-  transition: 0.3s;
+  margin-top: 0.5rem;
+  transition: background-color 0.3s ease;
 }
 
 .login-btn:hover {
-  background: #001fe6;
-  transform: scale(1.02);
+  background-color: #0091ff;
 }
 
+/* Forgot password link */
 .forgot-password {
-  display: block;
-  margin-top: 12px;
-  font-size: 14px;
-  color: black;
+  display: inline-block;
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  color: #3498db;
   text-decoration: none;
-  transition: 0.3s;
+  transition: color 0.3s ease;
 }
 
 .forgot-password:hover {
-  text-decoration: underline;
+  color: #1d6fa5;
 }
 
+/* Error message style */
 .error-msg {
-  color: #ff4d4d;
-  margin-top: 10px;
-  font-size: 14px;
+  margin-top: 1rem;
+  color: #e74c3c;
+  font-size: 0.9rem;
+  font-weight: 500;
 }
 
-@media (max-width: 1024px) {
+/* Responsive adjustments */
+@media (max-width: 500px) {
   .login-card {
-    width: 80%;
-    padding: 30px;
-  }
-}
-
-@media (max-width: 768px) {
-  .login-card {
-    width: 90%;
-    padding: 25px;
+    padding: 1.5rem;
   }
 
-  h2 {
-    font-size: 22px;
-  }
-
-  .input-group label {
-    font-size: 14px;
-  }
-
-  .input-group input {
-    font-size: 16px;
-    padding: 12px;
-  }
-
-  .login-btn {
-    font-size: 18px;
-    padding: 12px;
-  }
-}
-
-@media (max-width: 480px) {
-  .login-card {
-    width: 95%;
-    padding: 20px;
-  }
-
-  h2 {
-    font-size: 20px;
-  }
-
-  .input-group label {
-    font-size: 14px;
-  }
-
-  .input-group input {
-    font-size: 14px;
-    padding: 10px;
-  }
-
-  .login-btn {
-    font-size: 16px;
-    padding: 12px;
+  .login-card h2 {
+    font-size: 1.5rem;
   }
 }

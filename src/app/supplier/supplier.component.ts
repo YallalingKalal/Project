@@ -26,7 +26,7 @@ export class SupplierComponent implements OnInit {
   suppliers: Supplier[] = [];
   editingIndex: number | null = null;
 
-  constructor(private supplierService: SupplierService) {}
+  constructor(private supplierService: SupplierService) { }
 
   ngOnInit(): void {
     this.loadSuppliers();
@@ -45,6 +45,7 @@ export class SupplierComponent implements OnInit {
         this.supplierService.updateSupplier(this.supplier).subscribe(() => {
           this.suppliers[this.editingIndex!] = { ...this.supplier };
           this.resetForm();
+          this.loadSuppliers();
         });
       } else {
         // Add new supplier
@@ -53,6 +54,7 @@ export class SupplierComponent implements OnInit {
           .subscribe((newSupplier) => {
             this.suppliers.push(newSupplier);
             this.resetForm();
+            this.loadSuppliers();
           });
       }
     } else {

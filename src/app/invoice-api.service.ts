@@ -52,16 +52,19 @@ export interface InvoiceData {
 })
 export class InvoiceApiService {
   // private url = 'http://192.168.0.210:8000/api/';
-  private baseApiUrl = 'http://192.168.0.106:8000/api';
+  private baseApiUrl = 'https://jal.beatsacademy.in/api/bill';
   private getApiUrl = `${this.baseApiUrl}/allBillInvoices/`;
   private postApiUrl = `${this.baseApiUrl}/addBillInvoices/create/`;
   // Assuming that for update and delete, the vendor id is appended to the URL
   private putApiUrl = `${this.baseApiUrl}/updateBillInvoices`;
   private deleteApiUrl = `${this.baseApiUrl}/deleteBillInvoices`;
-  private vendorApiUrl = `${this.baseApiUrl}/allvendor/`;
-  private descApiUrl = `${this.baseApiUrl}/liststocks/`;
 
-  constructor(private http: HttpClient) {}
+  private baseVendorApi = 'https://jal.beatsacademy.in/api/vendor/';
+  private vendorApiUrl = `${this.baseVendorApi}/allvendor/`;
+  private baseStockApi = 'https://jal.beatsacademy.in/api/stock';
+  private descApiUrl = `${this.baseStockApi}/allstock/`;
+
+  constructor(private http: HttpClient) { }
 
   getBillVendors(): Observable<any> {
     return this.http.get(this.vendorApiUrl);

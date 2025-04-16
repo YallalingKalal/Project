@@ -29,7 +29,7 @@ export class LoginComponent {
     }
 
     this.http
-      .post<any>('https://jal.beatsacademy.in/api/login/', this.apiLoginObj)
+      .post<any>('https://jal.beatsacademy.in/api/user/login/', this.apiLoginObj)
       .subscribe({
         next: (res) => {
           if (res.status === 'success' && res.token) {

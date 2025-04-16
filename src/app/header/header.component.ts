@@ -38,6 +38,6 @@ export class HeaderComponent {
     localStorage.clear(); // Clear all localStorage items
     // OR use localStorage.removeItem('username') to remove specific item
     this.router.navigate(['/login']);
-    this.toaster.warning('You have been logged out!', 'Logout');
+    this.toaster.success('You have been logged out!', 'Logout');
   }
 }

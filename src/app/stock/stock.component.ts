@@ -27,7 +27,7 @@ export class StockComponent implements OnInit {
     stock_type: 'Parent',
   };
 
-  constructor(private productsService: ProductsService) {}
+  constructor(private productsService: ProductsService) { }
 
   ngOnInit(): void {
     this.loadProducts();
@@ -39,7 +39,7 @@ export class StockComponent implements OnInit {
       next: (response: any) => {
         // Use 'any' for flexibility with API response
         if (response && response) {
-          this.productList = response.map((product: Product) => ({
+          this.productList = response.all_info.map((product: Product) => ({
             ...product,
             quantity: product.quantity ?? 1, // Set default quantity to 1 if missing
             total: product.total ?? product.price, // Set default total to price if missing
@@ -99,9 +99,9 @@ export class StockComponent implements OnInit {
       type === 'All'
         ? [...this.productList] // Show all products
         : this.productList.filter(
-            (product) =>
-              product.stock_type?.toLowerCase() === type.toLowerCase()
-          );
+          (product) =>
+            product.stock_type?.toLowerCase() === type.toLowerCase()
+        );
   }
 
   // Update quantity and recalculate total locally

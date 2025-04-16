@@ -26,7 +26,7 @@ export class AddVendorComponent implements OnInit {
   vendors: Vendor[] = [];
   editingIndex: number | null = null;
 
-  constructor(private vendorService: VendorService) {}
+  constructor(private vendorService: VendorService) { }
 
   ngOnInit(): void {
     this.loadVendors();
@@ -36,7 +36,8 @@ export class AddVendorComponent implements OnInit {
   loadVendors(): void {
     this.vendorService.getVendors().subscribe({
       next: (data: any) => {
-        this.vendors = data;
+        this.vendors = data.all_info
+          ;
       },
       error: (err) => console.error('Error fetching vendors:', err),
     });
@@ -51,6 +52,7 @@ export class AddVendorComponent implements OnInit {
             this.vendors[this.editingIndex!] = updatedVendor;
             this.editingIndex = null;
             this.resetForm();
+            this.loadVendors();
           },
           error: (err) => console.error('Error updating vendor:', err),
         });
@@ -60,6 +62,7 @@ export class AddVendorComponent implements OnInit {
           next: (newVendor: Vendor) => {
             this.vendors.push(newVendor);
             this.resetForm();
+            this.loadVendors();
           },
           error: (err) => console.error('Error adding vendor:', err),
         });

@@ -88,7 +88,7 @@ export class BillingComponent implements OnInit {
   descriptionsArray: any[] = []; // Assuming this is for descriptions
   selectedVendor: any = null;
 
-  constructor(private invoiceService: InvoiceApiService) {}
+  constructor(private invoiceService: InvoiceApiService) { }
 
   ngOnInit(): void {
     this.getVendors();
@@ -179,7 +179,7 @@ export class BillingComponent implements OnInit {
     this.invoiceData.total_amount = total;
     return total;
   }
-  
+
 
   // calculateInvoiceTotal(): number {
   //   return this.invoiceData.items.reduce(
@@ -240,13 +240,13 @@ export class BillingComponent implements OnInit {
       alert('Please enter records!');
       return;
     }
-  
+
     this.invoiceData.total_amount = this.calculateInvoiceTotal(); // 👈 ensure it's updated
-  
+
     const firstLineItem = this.invoiceData.items[0];
     const formattedPayload: any = { ...this.invoiceData, ...firstLineItem };
     delete formattedPayload.lineItems;
-  
+
     this.invoiceService.postInvoice(formattedPayload).subscribe(
       (response: any) => {
         console.log('Invoice submitted successfully:', response);
@@ -258,7 +258,7 @@ export class BillingComponent implements OnInit {
       }
     );
   }
-  
+
 
   getVendors(): void {
     this.invoiceService.getBillVendors().subscribe(
@@ -275,7 +275,7 @@ export class BillingComponent implements OnInit {
     this.invoiceService.getBillDescriptions().subscribe(
       (response: any) => {
         console.log(response);
-        this.descriptionsArray = response;
+        this.descriptionsArray = response.all_info;
       },
       (error: any) => {
         console.error('Error fetching descriptions:', error);

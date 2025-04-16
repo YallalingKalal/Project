@@ -18,7 +18,7 @@ export interface Product {
 })
 export class ProductsService {
   // Define the base URL and specific endpoints for GET and POST
-  private baseApiUrl = 'http://192.168.0.106:8000/api';
+  private baseApiUrl = 'https://jal.beatsacademy.in/api/stock';
   private getApiUrl = `${this.baseApiUrl}/allstock/`;
   private postApiUrl = `${this.baseApiUrl}/addstock/`;
   private putApiUrl = `${this.baseApiUrl}/updatestock`;
@@ -29,7 +29,7 @@ export class ProductsService {
 
   // http://192.168.0.229:8000/api/stock/?stock_type=child
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   // GET all products from the allstock API
   getProducts(): Observable<Product[]> {

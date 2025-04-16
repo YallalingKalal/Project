@@ -19,14 +19,14 @@ export interface Supplier {
   providedIn: 'root',
 })
 export class SupplierService {
-  private baseApiUrl = 'http://192.168.0.106:8000/api/';
+  private baseApiUrl = 'https://jal.beatsacademy.in/api/supplier/';
   private getApiUrl = `${this.baseApiUrl}allsupplier/`;
   private postApiUrl = `${this.baseApiUrl}addsupplier/`;
   // Assuming that for update and delete, the supplier id is appended to the URL
   private updateApiUrl = `${this.baseApiUrl}updatesupplier/`;
   private deleteApiUrl = `${this.baseApiUrl}deletesupplier/`;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   // GET: Retrieve all suppliers
   getSuppliers(): Observable<Supplier[]> {
