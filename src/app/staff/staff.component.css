@@ -47,7 +47,12 @@ input[type="text"],
 input[type="email"],
 input[type="number"],
 input[type="date"],
-select {
+select,
+textarea,
+/* Added textarea style */
+input[type="file"]
+
+/* Added file input style */ {
   padding: 12px;
   border: 1px solid #e0e0e0;
   border-radius: 6px;
@@ -57,7 +62,9 @@ select {
 }
 
 input:focus,
-select:focus {
+select:focus,
+textarea:focus,
+input[type="file"]:focus {
   border-color: #3498db;
   box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
   outline: none;
@@ -107,14 +114,33 @@ tbody tr:hover {
 
 .form-group {
   margin-bottom: 1rem;
+  display: flex;
+  /* Added flex to align label and input */
+  flex-direction: column;
+  /* Stack label and input by default */
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: #34495e;
+  font-weight: 500;
+  /* You can add margin-right here if you want to move it horizontally
+     but it might affect the layout for other fields. */
+  /* margin-right: 1rem; */
+  width: auto;
+  /* Adjust width as needed */
 }
 
 .form-group.full-width {
   grid-column: 1 / -1;
 }
 
-label {
+.form-group.full-width label {
+  /* If you want to align full-width labels differently */
+  /* Add specific styles here */
   display: block;
+  /* Keep it block for full width */
   margin-bottom: 0.5rem;
   color: #34495e;
   font-weight: 500;
@@ -185,8 +211,27 @@ button[type="button"]:last-child:hover {
     grid-template-columns: 1fr;
   }
 
+  .form-group {
+    flex-direction: column;
+    /* Keep stacking on smaller screens */
+  }
+
+  .form-group label {
+    margin-right: 0;
+    /* Reset horizontal margin on smaller screens */
+    margin-bottom: 0.5rem;
+    width: auto;
+  }
+
   table {
     display: block;
     overflow-x: auto;
   }
+}
+
+mat-icon {
+  margin-right: 1rem;
+  cursor: pointer;
+  color: black;
+  transition: color 0.3s ease;
 }

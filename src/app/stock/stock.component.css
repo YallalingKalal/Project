@@ -206,3 +206,10 @@ tr:hover td {
 ::-webkit-scrollbar-thumb:hover {
   background: #2980b9;
 }
+
+mat-icon {
+  margin-right: 1rem;
+  cursor: pointer;
+  color: black;
+  transition: color 0.3s ease;
+}

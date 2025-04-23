@@ -1,58 +1,60 @@
 <div class="main-dashboard">
-  <div class="mini-small-card">
-    <div class="small-card card-1">
-      <p>Total Recidents</p>
+  <div class="mini-small-card-container">
+    <div class="small-card card-parent-product">
+      <p>Parent Product</p>
       <div class="inner-small-card">
-        <h3>132</h3>
-        <mat-icon>person</mat-icon>
+        <h3>001</h3>
+        <mat-icon>category</mat-icon>
       </div>
     </div>
 
-    <div class="small-card card-2">
-      <p>Staff Members</p>
+    <div class="small-card card-child-product">
+      <p>Child Product</p>
       <div class="inner-small-card">
-        <h3>35</h3>
-        <mat-icon>badge</mat-icon>
+        <h3>001</h3>
+        <mat-icon>layers</mat-icon>
       </div>
     </div>
 
-    <div class="small-card card-3">
-      <p>Staff-Records</p>
+    <div class="small-card card-defective-stock">
+      <p>Defective Stock</p>
       <div class="inner-small-card">
-        <h3>156</h3>
-        <mat-icon>healing</mat-icon>
+        <h3>001</h3>
+        <mat-icon>warning</mat-icon>
       </div>
     </div>
 
-    <div class="small-card card-4">
-      <p>New Record</p>
+    <div class="small-card card-vendor-count">
+      <p>Vendor Count</p>
       <div class="inner-small-card">
-        <h3>116</h3>
-        <mat-icon>add_circle</mat-icon>
+        <h3>001</h3>
+        <mat-icon>business</mat-icon>
+      </div>
+    </div>
+
+    <div class="small-card card-suppu-count">
+      <p>Supplier Count</p>
+      <div class="inner-small-card">
+        <h3>001</h3>
+        <mat-icon>local_shipping</mat-icon>
+      </div>
+    </div>
+
+    <div class="small-card card-total-invoice">
+      <p>Total Generated Invoice</p>
+      <div class="inner-small-card">
+        <h3>001</h3>
+        <mat-icon>receipt_long</mat-icon>
       </div>
     </div>
   </div>
-</div>
 
-<!-- <div class="main-dashboard">
-  <button mat-button class="menu-button text-white" routerLink="/allBilling">
-    <mat-icon>currency_rupee</mat-icon>
-    <span>Billing</span>
-  </button>
-</div> -->
-
-<div class="main-dashboard">
   <div class="container-fluid">
     <div class="row">
-      <!-- Table Section -->
       <div class="col-lg-8 col-md-12">
         <div class="info-card">
           <div class="card-header">
             <h3>Important Contacts</h3>
-            <!-- <div class="search-box">
-              <input type="text" placeholder="Search..." />
-              <mat-icon>search</mat-icon>
-            </div> -->
           </div>
           <div class="table-responsive">
             <table class="table table-hover">
@@ -99,18 +101,12 @@
                   <td>9876543210</td>
                   <td>Pune, Maharashtra</td>
                 </tr>
-                <tr>
-                  <td>Caretaker</td>
-                  <td>9876543210</td>
-                  <td>Pune, Maharashtra</td>
-                </tr>
               </tbody>
             </table>
           </div>
         </div>
       </div>
 
-      <!-- Quick Actions Section -->
       <div class="col-lg-4 col-md-12">
         <div class="quick-actions-card">
           <mat-card>
@@ -119,12 +115,16 @@
             </mat-card-header>
             <mat-card-content>
               <div class="action-buttons">
-                <button class="btn-1" mat-raised-button color="primary">
+                <button
+                  class="action-button action-button-schemes"
+                  mat-raised-button
+                  color="primary"
+                >
                   <mat-icon>person_add</mat-icon>
                   <span>Government Schemes</span>
                 </button>
                 <button
-                  class="btn-2"
+                  class="action-button action-button-records"
                   mat-raised-button
                   color="accent"
                   routerLink="/allmedicalrecords"
@@ -133,22 +133,38 @@
                   <span>Medical Records</span>
                 </button>
                 <button
+                  class="action-button action-button-funding"
                   mat-raised-button
                   color="primary"
-                  class="btn-3"
                   routerLink="/allFunding"
                 >
                   <mat-icon>assessment</mat-icon>
                   <span>Funding</span>
                 </button>
                 <button
+                  class="action-button action-button-admission"
                   mat-raised-button
                   color="accent"
                   routerLink="/allEducation"
-                  class="btn-4"
                 >
                   <mat-icon>group_add</mat-icon>
                   <span>New Admission</span>
+                </button>
+                <button
+                  class="action-button action-button-contacts"
+                  mat-raised-button
+                  color="warn"
+                >
+                  <mat-icon>contacts</mat-icon>
+                  <span>Important Contacts</span>
+                </button>
+                <button
+                  class="action-button action-button-settings"
+                  mat-raised-button
+                  color="secondary"
+                >
+                  <mat-icon>settings</mat-icon>
+                  <span>Settings</span>
                 </button>
               </div>
             </mat-card-content>
@@ -160,15 +176,10 @@
 
   <div class="app-footer">
     <a
-      _ngcontent-ng-c100715393=""
       href="https://wa.me/917517311326?text=Hello%20I'm%20visiting%20chordztechnologies.com%20and%20I'm%20interested%20to%20know%20your%20services"
       target="_blank"
       class="float"
-      ><i
-        _ngcontent-ng-c100715393=""
-        class="fab fa-whatsapp my-float"
-        style="margin-top: 15px"
-      ></i
+      ><i class="fab fa-whatsapp my-float" style="margin-top: 15px"></i
     ></a>
   </div>
 

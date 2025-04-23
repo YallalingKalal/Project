@@ -9,17 +9,22 @@ export interface Staff {
   designation: string;
   email: string;
   phone_number: string;
+  staff_address: string;
   date_of_birth?: Date | null;
   gender?: 'male' | 'female' | 'other' | null;
   department?: string;
   date_of_joining?: Date | null;
-  salary?: number | null;
-  bank_name?: string;
-  account_number?: string;
-  ifsc_code?: string;
-  aadhar_card_number?: string;
-  pan_card_number?: string;
+  // salary?: number | null;
+  // bank_name?: string;
+  // account_number?: string;
+  // ifsc_code?: string;
+  // aadhar_card_number?: string;
+  // pan_card_number?: string;
+  aadhar_card?: any;
+  pan_catd?: any;
+  address: string;
   photo?: any; // Depending on your API, this could be a File or a URL string.
+
 }
 
 @Injectable({

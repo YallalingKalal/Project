@@ -166,7 +166,7 @@ export class AllRecordsComponent implements OnInit {
           <div class="invoice-container">
             <div class="header">
               <h2>TAX INVOICE</h2>
-              <img src="../../assets/jal.jpg" height=100 width=100>
+              <img src="${location.origin}/assets/company.jpg" height=100 width=100>
               <h3>JAL</h3>
               <p class="bold">Manufacturers: Air / Oil / Fuel Filters</p>
               <p style="font-size:13px">
@@ -177,6 +177,7 @@ export class AllRecordsComponent implements OnInit {
 
             <table class="table">
               <tr><th>Invoice No</th><td>${invoice.invoice_number}</td></tr>
+              <tr><th>Date</th><td>${invoice.invoice_date}</td></tr>
               <tr><th>Date</th><td>${invoice.invoice_date}</td></tr>
               <tr><th>GSTIN</th><td>${invoice.gst_no}</td></tr>
               <tr><th>Consignee Name</th><td>${invoice.consignee_name}</td></tr>

@@ -136,3 +136,11 @@ table th {
     padding: 0.5rem;
   }
 }
+
+mat-icon {
+  margin-right: 1rem;
+  margin-top: 1rem;
+  cursor: pointer;
+  color: black;
+  transition: color 0.3s ease;
+}

@@ -2,11 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { SupplierService, Supplier } from '../supplier.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-supplier',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, MatIconModule],
   templateUrl: './supplier.component.html',
   styleUrls: ['./supplier.component.css'],
 })

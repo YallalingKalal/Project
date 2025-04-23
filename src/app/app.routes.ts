@@ -11,6 +11,7 @@ import { authGuard } from './guard/auth.guard';
 import { AddVendorComponent } from './add-vendor/add-vendor.component';
 import { SupplierComponent } from './supplier/supplier.component';
 import { AllRecordsComponent } from './all-records/all-records.component';
+import { DefStockComponent } from './def-stock/def-stock.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -28,6 +29,7 @@ export const routes: Routes = [
       { path: 'staff', component: StaffComponent },
       { path: 'add-vendor', component: AddVendorComponent },
       { path: 'supplier', component: SupplierComponent },
+      { path: 'def-stock', component: DefStockComponent },
       { path: 'setting', component: SettingComponent },
       { path: 'all-invoices', component: AllRecordsComponent },
     ],

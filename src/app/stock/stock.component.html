@@ -129,21 +129,17 @@
           </td>
           <td>₹{{ product.total }}</td>
           <td>
-            <button
-              class="edit-btn"
-              *ngIf="editingIndex !== i"
-              (click)="editProduct(i)"
-            >
-              ✏️
-            </button>
-            <button
+            <mat-icon *ngIf="editingIndex !== i" (click)="editProduct(i)">
+              edit
+            </mat-icon>
+            <mat-icon
               class="save-btn"
               *ngIf="editingIndex === i"
               (click)="saveEdit()"
             >
-              💾
-            </button>
-            <button class="delete-btn" (click)="removeProduct(i)">❌</button>
+              save
+            </mat-icon>
+            <mat-icon (click)="removeProduct(i)">delete</mat-icon>
           </td>
         </tr>
       </tbody>

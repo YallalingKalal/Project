@@ -6,26 +6,34 @@ import {
   FormControl,
   Validators,
   FormsModule,
+
 } from '@angular/forms';
 import { StaffService, Staff } from '../staff.service';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-staff',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, FormsModule],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule, MatIconModule],
   templateUrl: './staff.component.html',
   styleUrls: ['./staff.component.css'],
 })
 export class StaffComponent implements OnInit {
   staffImage: File | null | undefined;
+  aadharCardFile: File | null | undefined;
+  panCardFile: File | null | undefined;
   staffList: Staff[] = [];
   filteredStaffList: Staff[] = [];
   registrationForm: FormGroup;
   showForm = false;
   editingStaffIndex: number | null = null;
   photoURL: string | ArrayBuffer | null = null;
+  aadharCardURL: string | ArrayBuffer | null = null;
+  panCardURL: string | ArrayBuffer | null = null;
   searchTerm: string = '';
   showSearchInput: boolean = false;
+  viewFormDetails: boolean = false;
+  staffDetails: Staff | null = null;
 
   constructor(private staffService: StaffService) {
     this.registrationForm = new FormGroup({
@@ -38,12 +46,10 @@ export class StaffComponent implements OnInit {
       department: new FormControl(''),
       date_of_joining: new FormControl(null),
       salary: new FormControl(null, [Validators.min(0)]),
-      bank_name: new FormControl(''),
-      account_number: new FormControl(''),
-      ifsc_code: new FormControl(''),
-      aadhar_card_number: new FormControl(''),
-      pan_card_number: new FormControl(''),
-      // photo: new FormControl(null),
+      address: new FormControl(''),
+      aadhar_card: new FormControl(null),
+      pan_card: new FormControl(null),
+      photo: new FormControl(null),
     });
   }
 
@@ -101,6 +107,12 @@ export class StaffComponent implements OnInit {
       if (this.staffImage) {
         formData.append('photo', this.staffImage);
       }
+      if (this.aadharCardFile) {
+        formData.append('aadhar_card', this.aadharCardFile);
+      }
+      if (this.panCardFile) {
+        formData.append('pan_card', this.panCardFile);
+      }
 
       // If updating an existing staff record, include the id.
       if (this.editingStaffIndex !== null) {
@@ -114,6 +126,7 @@ export class StaffComponent implements OnInit {
           this.photoURL = null;
           this.showForm = false;
           this.editingStaffIndex = null;
+          this.viewFormDetails = false; // Ensure view form is closed after edit
         });
       } else {
         // For a new record
@@ -123,7 +136,10 @@ export class StaffComponent implements OnInit {
           this.registrationForm.reset();
           this.loadStaff();
           this.photoURL = null;
+          this.aadharCardURL = null;
+          this.panCardURL = null;
           this.showForm = false;
+          this.viewFormDetails = false; // Ensure view form is closed after add
         });
       }
     } else {
@@ -136,8 +152,11 @@ export class StaffComponent implements OnInit {
     const staffToEdit = this.staffList[index];
     this.registrationForm.patchValue(staffToEdit);
     this.photoURL = null;
+    this.aadharCardURL = null;
+    this.panCardURL = null;
     this.showForm = true;
     this.showSearchInput = false;
+    this.viewFormDetails = false;
   }
 
   deleteStaff(index: number): void {
@@ -156,6 +175,10 @@ export class StaffComponent implements OnInit {
     this.registrationForm.reset();
     this.photoURL = null;
     this.showSearchInput = false;
+    this.aadharCardURL = null;
+    this.panCardURL = null;
+    this.showSearchInput = false;
+    this.viewFormDetails = false;
   }
 
   searchStaff(): void {
@@ -173,5 +196,17 @@ export class StaffComponent implements OnInit {
       this.searchTerm = '';
       this.filteredStaffList = [...this.staffList];
     }
+  }
+
+  viewStaffDetails(staff: Staff): void {
+    this.staffDetails = staff;
+    this.registrationForm.patchValue(staff);
+    this.photoURL = staff?.photo || null;
+    this.aadharCardURL = staff?.['aadhar_card'] || null;
+    this.panCardURL = staff?.['pan_card'] || null;
+    this.viewFormDetails = true;
+    this.showForm = true;
+    this.showSearchInput = false;
+    this.editingStaffIndex = null;
   }
 }
