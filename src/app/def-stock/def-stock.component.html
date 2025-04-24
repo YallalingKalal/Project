@@ -4,30 +4,17 @@
   <form (ngSubmit)="addItem()" #addItemForm="ngForm">
     <div>
       <label for="stock">Stock:</label>
-      <select
-        id="stock"
-        name="stock"
-        [(ngModel)]="newItem.stock"
-        required
-        (ngModelChange)="onDescriptionChange(stockOptions)"
-      >
+      <select id="stock" name="stock" [(ngModel)]="newItem.stock" required
+        (ngModelChange)="onDescriptionChange($event)">
         <option value="" disabled selected>Select Stock</option>
-        <option
-          *ngFor="let stockOption of stockOptions"
-          [ngValue]="stockOption.description"
-        >
+        <option *ngFor="let stockOption of stockOptions" [ngValue]="stockOption">
           {{ stockOption.description }}
         </option>
       </select>
     </div>
     <div>
       <label for="stock_type">Stock Type:</label>
-      <select
-        id="stock_type"
-        name="stock_type"
-        [(ngModel)]="newItem.stock_type"
-        required
-      >
+      <select id="stock_type" name="stock_type" [(ngModel)]="newItem.stock_type" required>
         <option value="" disabled selected>Select Stock Type</option>
         <option *ngFor="let type of stockTypes" [value]="type">
           {{ type }}
@@ -36,43 +23,21 @@
     </div>
     <div>
       <label for="defective_quantity">Defective Quantity:</label>
-      <input
-        type="number"
-        id="defective_quantity"
-        name="defective_quantity"
-        [(ngModel)]="newItem.defective_quantity"
-        required
-      />
+      <input type="number" id="defective_quantity" name="defective_quantity" [(ngModel)]="newItem.defective_quantity"
+        required />
     </div>
     <div>
       <label for="reusable_quantity">Reusable Quantity:</label>
-      <input
-        type="number"
-        id="reusable_quantity"
-        name="reusable_quantity"
-        [(ngModel)]="newItem.reusable_quantity"
-        required
-      />
+      <input type="number" id="reusable_quantity" name="reusable_quantity" [(ngModel)]="newItem.reusable_quantity"
+        required />
     </div>
     <div>
       <label for="price">Price:</label>
-      <input
-        type="number"
-        id="price"
-        name="price"
-        [(ngModel)]="newItem.price"
-        required
-      />
+      <input type="number" id="price" name="price" [(ngModel)]="newItem.price" required />
     </div>
     <div>
       <label for="reason">Reason:</label>
-      <input
-        type="text"
-        id="reason"
-        name="reason"
-        [(ngModel)]="newItem.reason"
-        required
-      />
+      <input type="text" id="reason" name="reason" [(ngModel)]="newItem.reason" required />
     </div>
     <button type="submit" [disabled]="addItemForm.invalid">Add Item</button>
   </form>
@@ -109,10 +74,7 @@
           <td>
             <select [(ngModel)]="item.stock">
               <option value="" disabled>Select Stock</option>
-              <option
-                *ngFor="let stockOption of stockOptions"
-                [value]="stockOption"
-              >
+              <option *ngFor="let stockOption of stockOptions" [value]="stockOption">
                 {{ stockOption }}
               </option>
             </select>

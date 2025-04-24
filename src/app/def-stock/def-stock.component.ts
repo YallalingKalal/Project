@@ -54,7 +54,7 @@ export class DefStockComponent implements OnInit {
       (p) => p.description === stockOption.description
     );
     if (selectedProduct) {
-      stockOption.price = selectedProduct.price;
+      this.newItem.price = selectedProduct.price;
     }
   }
 
