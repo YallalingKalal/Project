@@ -44,7 +44,7 @@ export class DefStockComponent implements OnInit {
         this.stockOptions = response.all_info;
       },
       (error: any) => {
-        console.error('Error fetching descriptions:', error);
+        console.error('Errorr fetching descriptions:', error);
       }
     );
   }
