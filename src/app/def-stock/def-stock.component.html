@@ -4,10 +4,19 @@
   <form (ngSubmit)="addItem()" #addItemForm="ngForm">
     <div>
       <label for="stock">Stock:</label>
-      <select id="stock" name="stock" [(ngModel)]="newItem.stock" required>
+      <select
+        id="stock"
+        name="stock"
+        [(ngModel)]="newItem.stock"
+        required
+        (ngModelChange)="onDescriptionChange(stockOptions)"
+      >
         <option value="" disabled selected>Select Stock</option>
-        <option *ngFor="let stockOption of stockOptions" [value]="stockOption">
-          {{ stockOption }}
+        <option
+          *ngFor="let stockOption of stockOptions"
+          [ngValue]="stockOption.description"
+        >
+          {{ stockOption.description }}
         </option>
       </select>
     </div>

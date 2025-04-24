@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
+import { DefStockService } from '../def-stock.service';
 
 interface StockItem {
   id: number;
@@ -22,20 +23,39 @@ interface StockItem {
   styleUrls: ['./def-stock.component.css']
 })
 export class DefStockComponent implements OnInit {
+  constructor(private defStockService: DefStockService) { }
   stockItems: StockItem[] = [];
   newItem: StockItem = { id: 0, stock: '', stock_type: 'Child Product', defective_quantity: 0, reusable_quantity: 0, price: 0, reason: '' };
   nextId: number = 1;
   stockTypes: ('Child Product' | 'Parent Product')[] = ['Child Product', 'Parent Product'];
-  stockOptions: string[] = []; // Array to hold stock options
+  stockOptions: any[] = []; // Array to hold stock options
 
   ngOnInit(): void {
     this.loadData();
     this.loadStockOptions();
   }
 
+
+
   loadStockOptions(): void {
-    // In a real application, you would fetch these from a service/API
-    this.stockOptions = ['stock A'];
+    this.defStockService.getDefectiveStock().subscribe(
+      (response: any) => {
+        // console.log(response);
+        this.stockOptions = response.all_info;
+      },
+      (error: any) => {
+        console.error('Error fetching descriptions:', error);
+      }
+    );
+  }
+
+  onDescriptionChange(stockOption: any): void {
+    const selectedProduct = this.stockOptions.find(
+      (p) => p.description === stockOption.description
+    );
+    if (selectedProduct) {
+      stockOption.price = selectedProduct.price;
+    }
   }
 
   loadData(): void {
