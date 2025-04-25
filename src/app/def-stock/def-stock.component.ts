@@ -31,7 +31,7 @@ export class DefStockComponent implements OnInit {
   stockOptions: any[] = []; // Array to hold stock options
 
   ngOnInit(): void {
-    this.loadData();
+    this.loadServerData();
     this.loadStockOptions();
   }
 
@@ -49,40 +49,71 @@ export class DefStockComponent implements OnInit {
     );
   }
 
-  onDescriptionChange(stockOption: any): void {
-    const selectedProduct = this.stockOptions.find(
-      (p) => p.description === stockOption.description
-    );
+  // onDescriptionChange(stockOption: any): void {
+  //   const selectedProduct = this.stockOptions.find(
+  //     (p) => p.description === stockOption.description
+  //   );
+  //   if (selectedProduct) {
+  //     this.newItem.price = selectedProduct.price;
+  //   }
+  // }
+  onDescriptionChange(description: string): void {
+    const selectedProduct = this.stockOptions.find(p => p.description === description);
     if (selectedProduct) {
       this.newItem.price = selectedProduct.price;
     }
   }
 
-  loadData(): void {
-    const storedData = localStorage.getItem('stockItems');
-    if (storedData) {
-      this.stockItems = JSON.parse(storedData);
-      this.stockItems = this.stockItems.map(item => ({
-        ...item,
-        stock_type: this.stockTypes.includes(item.stock_type) ? item.stock_type : 'Child Product',
-        price: item.price !== undefined ? item.price : 0 // Ensure price exists
-      }));
-      this.nextId = this.stockItems.length > 0 ? Math.max(...this.stockItems.map(item => item.id)) + 1 : 1;
-    }
+
+
+  loadServerData(): void {
+    this.defStockService.showDefStock().subscribe(
+      (response: any) => {
+        this.stockItems = response.all_info.map((item: any, index: number) => ({
+          ...item,
+          id: index + 1,
+          isEditing: false,
+          stock_type: item.stock_type || 'Child Product',
+          price: item.price !== undefined ? item.price : 0
+        }));
+        this.nextId = this.stockItems.length > 0 ? Math.max(...this.stockItems.map(item => item.id)) + 1 : 1;
+      },
+      (error: any) => {
+        console.error('Error fetching defective stock from server:', error);
+      }
+    );
   }
+
 
   saveData(): void {
     localStorage.setItem('stockItems', JSON.stringify(this.stockItems));
   }
 
   addItem(): void {
-    if (this.newItem.stock && this.newItem.stock_type && this.newItem.defective_quantity >= 0 && this.newItem.reusable_quantity >= 0 && this.newItem.price >= 0 && this.newItem.reason) {
-      this.newItem.id = this.nextId++;
-      this.stockItems.push({ ...this.newItem });
-      this.newItem = { id: 0, stock: '', stock_type: 'Child Product', defective_quantity: 0, reusable_quantity: 0, price: 0, reason: '' };
-      this.saveData();
+    if (this.newItem.stock && this.newItem.stock_type && this.newItem.defective_quantity >= 0 &&
+      this.newItem.reusable_quantity >= 0 && this.newItem.price >= 0 && this.newItem.reason) {
+
+      this.defStockService.addDefStock(this.newItem).subscribe(
+        (response) => {
+          console.log('Item added successfully', response);
+          this.loadServerData(); // Refresh the list from server
+          this.newItem = {
+            id: 0,
+            stock: '',
+            stock_type: 'Child Product',
+            defective_quantity: 0,
+            reusable_quantity: 0,
+            price: 0,
+            reason: ''
+          };
+        },
+        (error) => {
+          console.error('Error adding item', error);
+        }
+      );
     }
   }
+
 
   editItem(index: number): void {
     this.stockItems = this.stockItems.map((item, i) => (i === index ? { ...item, isEditing: true } : item));

@@ -77,7 +77,7 @@ export class AllRecordsComponent implements OnInit {
           <div class="invoice-container">
             <div class="header">
               <h2>TAX INVOICE</h2>
-              <img src="./assets/company.jpg" height="100" width="100" alt="Company Logo">
+              <img src="./assets/jal.jpg" height="100" width="100" alt="Company Logo">
               <h3>JAL</h3>
               <p class="bold">Manufacturers: Air / Oil / Fuel Filters</p>
               <p style="font-size:13px">

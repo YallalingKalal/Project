@@ -23,10 +23,20 @@ export class DefStockService {
 
   private baseApiUrl = 'https://jal.beatsacademy.in/api/stock';
   private getApiUrl = `${this.baseApiUrl}/allstock/`;
+  private defgetAPI = 'https://jal.beatsacademy.in/api/stock/DefectiveStock/';
+  private postApiUrl = `${this.defgetAPI}addstock/`;
+  private defgetAPIUrl = `${this.defgetAPI}allstock/`;
 
   constructor(private http: HttpClient) { }
 
   getDefectiveStock(): Observable<any> {
     return this.http.get(this.getApiUrl);
+  }
+  addDefStock(stockItem: StockItem): Observable<any> {
+    return this.http.post<StockItem>(this.postApiUrl, stockItem);
+  }
+
+  showDefStock(): Observable<any> {
+    return this.http.get(this.defgetAPIUrl);
   }
 }

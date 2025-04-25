@@ -2,22 +2,17 @@
   <h2 class="sticky-header">Stock Management</h2>
 
   <div class="button-container">
-    <!-- Parent Product Button -->
     <button (click)="filterProductList('Parent')">Parent Products</button>
 
-    <!-- Child Product Button -->
     <button (click)="filterProductList('Child')">Child Products</button>
 
-    <!-- Show All Data Button -->
     <button (click)="filterProductList('All')">Show All Data</button>
 
-    <!-- Add New Stock Button -->
     <button (click)="showAddStockForm = !showAddStockForm">
       Add New Stock
     </button>
   </div>
 
-  <!-- Add New Stock Form -->
   <div *ngIf="showAddStockForm" class="add-stock-form">
     <form #form="ngForm" (ngSubmit)="addNewStock(form)">
       <h3>Add New Stock</h3>
@@ -59,7 +54,6 @@
     </form>
   </div>
 
-  <!-- Table -->
   <h3>Selected Products</h3>
   <div class="table-container">
     <table>
@@ -118,7 +112,17 @@
             />
             <span *ngIf="editingIndex !== i">{{ product.hsn_code }}</span>
           </td>
-          <td>{{ product.stock_type }}</td>
+          <td>
+            <select
+              *ngIf="editingIndex === i"
+              [(ngModel)]="product.stock_type"
+              class="edit-input"
+            >
+              <option value="Parent">Parent</option>
+              <option value="Child">Child</option>
+            </select>
+            <span *ngIf="editingIndex !== i">{{ product.stock_type }}</span>
+          </td>
           <td>
             <input
               type="number"
