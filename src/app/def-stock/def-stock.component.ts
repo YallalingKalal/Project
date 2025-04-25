@@ -67,21 +67,23 @@ export class DefStockComponent implements OnInit {
 
 
   loadServerData(): void {
-    this.defStockService.showDefStock().subscribe(
-      (response: any) => {
-        this.stockItems = response.all_info.map((item: any, index: number) => ({
+    this.defStockService.showDefStock().subscribe({
+      next: (response: any) => {
+        this.stockItems = response.all_info.map((item: any) => ({
           ...item,
-          id: index + 1,
           isEditing: false,
           stock_type: item.stock_type || 'Child Product',
           price: item.price !== undefined ? item.price : 0
         }));
-        this.nextId = this.stockItems.length > 0 ? Math.max(...this.stockItems.map(item => item.id)) + 1 : 1;
+        // Use the backend-provided IDs instead of generating new ones
+        this.nextId = this.stockItems.length > 0 ?
+          Math.max(...this.stockItems.map(item => item.id)) + 1 : 1;
       },
-      (error: any) => {
+      error: (error: any) => {
         console.error('Error fetching defective stock from server:', error);
+        alert('Error loading stock data. Please refresh the page.');
       }
-    );
+    });
   }
 
 
@@ -117,19 +119,54 @@ export class DefStockComponent implements OnInit {
 
   editItem(index: number): void {
     this.stockItems = this.stockItems.map((item, i) => (i === index ? { ...item, isEditing: true } : item));
+
   }
 
   saveItem(index: number): void {
-    this.stockItems = this.stockItems.map((item, i) => (i === index ? { ...item, isEditing: false } : item));
-    this.saveData();
+    const itemToUpdate = this.stockItems[index];
+
+    this.defStockService.updateDefStock(itemToUpdate).subscribe(
+      (response) => {
+        console.log('Item updated successfully', response);
+        this.stockItems[index] = { ...response, isEditing: false };
+        this.loadServerData(); // Optionally update with latest response
+      },
+      (error) => {
+        console.error('Error updating item', error);
+      }
+    );
   }
+
+
 
   cancelEdit(index: number): void {
     this.stockItems = this.stockItems.map((item, i) => (i === index ? { ...item, isEditing: false } : item));
   }
 
   deleteItem(index: number): void {
-    this.stockItems = this.stockItems.filter((_, i) => i !== index);
-    this.saveData();
+    const itemToDelete = this.stockItems[index];
+    if (!itemToDelete || !itemToDelete.id) {
+      console.error('Item ID is missing');
+      return;
+    }
+
+    const confirmDelete = confirm(`Are you sure you want to delete stock: "${itemToDelete.stock}"?`);
+    if (!confirmDelete) return;
+
+    this.defStockService.deleteDefStock(itemToDelete.id).subscribe({
+      next: () => {
+        console.log('Item deleted successfully');
+        this.loadServerData();
+      },
+      error: (error) => {
+        console.error('Error deleting item:', error);
+        if (error.status === 400) {
+          // alert('Unable to delete: Item not found in the database.');
+        } else {
+          // alert('An error occurred while deleting the item. Please try again.');
+        }
+      }
+    });
   }
+
 }

@@ -26,6 +26,8 @@ export class DefStockService {
   private defgetAPI = 'https://jal.beatsacademy.in/api/stock/DefectiveStock/';
   private postApiUrl = `${this.defgetAPI}addstock/`;
   private defgetAPIUrl = `${this.defgetAPI}allstock/`;
+  private defdeleteAPIUrl = `${this.defgetAPI}deletestock/`;
+  private defupdateAPIUrl = `${this.defgetAPI}updatestock/`;
 
   constructor(private http: HttpClient) { }
 
@@ -38,5 +40,17 @@ export class DefStockService {
 
   showDefStock(): Observable<any> {
     return this.http.get(this.defgetAPIUrl);
+  }
+
+  // Rename to make it consistent and clear
+  updateDefStock(defStock: StockItem): Observable<StockItem> {
+    const url = `${this.defupdateAPIUrl}${defStock.id}/`;
+    return this.http.put<StockItem>(url, defStock);
+  }
+
+
+  deleteDefStock(stockId: number): Observable<any> {
+    const url = `${this.defdeleteAPIUrl}${stockId}/`;
+    return this.http.delete(url);
   }
 }
