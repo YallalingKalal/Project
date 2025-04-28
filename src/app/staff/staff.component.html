@@ -90,11 +90,13 @@
             {{ staff["phone_number"] }}
           </td>
           <td style="border: 1px solid #ddd; padding: 8px; text-align: center">
-            <mat-icon (click)="editStaff(i)">edit</mat-icon>
-            <mat-icon (click)="deleteStaff(i)">delete</mat-icon>
+            <mat-icon class="edit" (click)="editStaff(i)">edit</mat-icon>
+            <mat-icon class="delete" (click)="deleteStaff(i)">delete</mat-icon>
           </td>
           <td style="border: 1px solid #ddd; padding: 8px; text-align: center">
-            <mat-icon (click)="viewStaffDetails(staff)">visibility</mat-icon>
+            <mat-icon class="profile" (click)="viewStaffDetails(staff)"
+              >visibility</mat-icon
+            >
           </td>
         </tr>
       </tbody>

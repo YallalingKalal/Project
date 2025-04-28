@@ -117,6 +117,38 @@ html {
   font-weight: 500;
 }
 
+.password-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.password-input-wrapper input {
+  width: 100%;
+  padding-right: 40px; /* Make space for the icon button */
+}
+
+.password-toggle {
+  position: absolute;
+  right: 10px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+}
+
+.password-toggle mat-icon {
+  color: #666;
+  font-size: 20px;
+}
+
+.password-toggle:hover mat-icon {
+  color: #333;
+}
+
 /* Responsive adjustments */
 @media (max-width: 500px) {
   .login-card {

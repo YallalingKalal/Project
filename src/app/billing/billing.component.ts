@@ -1,9 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { InvoiceApiService } from '../invoice-api.service';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 interface LineItem {
   description: string;
@@ -95,6 +96,8 @@ export class BillingComponent implements OnInit {
     this.getDescriptions();
   }
 
+  toastr: ToastrService = inject(ToastrService);
+
   onVendorChange(vendor: any): void {
     if (vendor) {
       this.invoiceData.vendor_name = vendor.vendor_name;
@@ -102,7 +105,9 @@ export class BillingComponent implements OnInit {
       this.invoiceData.consignee_name = vendor.consignee_name || '';
       this.invoiceData.consignee_state_code = vendor.consignee_state_code || '';
       this.invoiceData.consignee_address = vendor.address || '';
-      // Add more fields as needed
+      this.toastr.info('Vendor details updated', 'Info');
+    } else {
+      this.toastr.warning('No vendor selected', 'Warning');
     }
   }
 
@@ -114,6 +119,9 @@ export class BillingComponent implements OnInit {
       item.hsn_code = selectedProduct.hsn_code;
       item.quantity = selectedProduct.quantity;
       item.unit_rate = selectedProduct.price;
+      this.toastr.info('Product details updated', 'Info');
+    } else {
+      this.toastr.warning('Product not found', 'Warning');
     }
   }
 
@@ -139,10 +147,15 @@ export class BillingComponent implements OnInit {
       total_value: 0.0,
       grand_total: 0.0,
     });
+    this.toastr.success('New line item added', 'Success');
   }
 
   removeLineItem(index: number): void {
-    this.invoiceData.items.splice(index, 1);
+    if (confirm('Are you sure you want to remove this item?')) {
+      this.invoiceData.items.splice(index, 1);
+      this.toastr.success('Line item removed', 'Success');
+      this.calculateInvoiceTotal();
+    }
   }
 
   calculateNetAmount(item: LineItem): number {
@@ -237,11 +250,16 @@ export class BillingComponent implements OnInit {
 
   submitInvoice(): void {
     if (!this.invoiceData.items || this.invoiceData.items.length === 0) {
-      alert('Please enter records!');
+      this.toastr.error('Please add at least one item to the invoice', 'Error');
       return;
     }
 
-    this.invoiceData.total_amount = this.calculateInvoiceTotal(); // 👈 ensure it's updated
+    if (!this.invoiceData.vendor_name || !this.invoiceData.gst_no) {
+      this.toastr.warning('Please select a vendor', 'Warning');
+      return;
+    }
+
+    this.invoiceData.total_amount = this.calculateInvoiceTotal();
 
     const firstLineItem = this.invoiceData.items[0];
     const formattedPayload: any = { ...this.invoiceData, ...firstLineItem };
@@ -250,23 +268,57 @@ export class BillingComponent implements OnInit {
     this.invoiceService.postInvoice(formattedPayload).subscribe(
       (response: any) => {
         console.log('Invoice submitted successfully:', response);
-        alert('Invoice submitted successfully!');
+        this.toastr.success('Invoice submitted successfully', 'Success');
+        this.resetForm();
       },
       (error: any) => {
         console.error('Error submitting invoice:', error);
-        alert('Failed to submit invoice.');
+        this.toastr.error('Failed to submit invoice', 'Error');
       }
     );
   }
 
+  // Add new helper method to reset form
+  private resetForm(): void {
+    this.invoiceData = {
+      vendor_name: '',
+      gst_no: '',
+      consignee_name: '',
+      consignee_state_code: '',
+      consignee_address: '',
+      remarks: '',
+      challan_date: '',
+      invoice_date: '',
+      challan_number: '',
+      order_date: '',
+      order_number: '',
+      veh_no: '',
+      transport_mode: 'road',
+      due_on: '',
+      time_of_supply: '',
+      payment_terms: '',
+      document: '',
+      delivery_terms: '',
+      transport: '',
+      place_of_supply: '',
+      l_r_number: '',
+      l_r_date: '',
+      ref: '',
+      total_amount: '',
+      items: [],
+    };
+    this.selectedVendor = null;
+  }
 
   getVendors(): void {
     this.invoiceService.getBillVendors().subscribe(
       (response: any) => {
         this.vendorsArray = response.all_info;
+        this.toastr.success('Vendors loaded successfully', 'Success');
       },
       (error: any) => {
         console.error('Error fetching vendors:', error);
+        this.toastr.error('Failed to load vendors', 'Error');
       }
     );
   }
@@ -276,9 +328,11 @@ export class BillingComponent implements OnInit {
       (response: any) => {
         console.log(response);
         this.descriptionsArray = response.all_info;
+        this.toastr.success('Product descriptions loaded successfully', 'Success');
       },
       (error: any) => {
         console.error('Error fetching descriptions:', error);
+        this.toastr.error('Failed to load product descriptions', 'Error');
       }
     );
   }

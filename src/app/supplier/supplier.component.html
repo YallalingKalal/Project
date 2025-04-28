@@ -118,8 +118,8 @@
         <td>{{ e.supplier_code }}</td>
         <td>{{ e.pan }}</td>
         <td>
-          <mat-icon (click)="editSupplier(i)">edit</mat-icon>
-          <mat-icon (click)="deleteSupplier(i)">delete</mat-icon>
+          <mat-icon class="edit" (click)="editSupplier(i)">edit</mat-icon>
+          <mat-icon class="delete" (click)="deleteSupplier(i)">delete</mat-icon>
         </td>
       </tr>
     </tbody>

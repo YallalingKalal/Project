@@ -101,8 +101,8 @@
           <td>{{ item.price }}</td>
           <td>{{ item.reason }}</td>
           <td class="edit-buttons">
-            <mat-icon (click)="editItem(i)">edit</mat-icon>
-            <mat-icon (click)="deleteItem(i)">delete</mat-icon>
+            <mat-icon class="edit" (click)="editItem(i)">edit</mat-icon>
+            <mat-icon class="delete" (click)="deleteItem(i)">delete</mat-icon>
           </td>
         </ng-container>
         <ng-template #editRow>
@@ -142,8 +142,8 @@
           <td><input type="number" [(ngModel)]="item.price" /></td>
           <td><input type="text" [(ngModel)]="item.reason" /></td>
           <td class="edit-buttons">
-            <mat-icon (click)="saveItem(i)">save</mat-icon>
-            <mat-icon (click)="cancelEdit(i)">cancel</mat-icon>
+            <mat-icon class="save" (click)="saveItem(i)">save</mat-icon>
+            <mat-icon class="cancel" (click)="cancelEdit(i)">cancel</mat-icon>
           </td>
         </ng-template>
       </tr>

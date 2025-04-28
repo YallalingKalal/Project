@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { VendorService, Vendor } from '../vendor.service';
 import { MatIconModule } from '@angular/material/icon';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-add-vendor',
@@ -33,50 +34,64 @@ export class AddVendorComponent implements OnInit {
     this.loadVendors();
   }
 
+  toastr: ToastrService = inject(ToastrService);
+
+
   // Load the vendor list from the backend
   loadVendors(): void {
     this.vendorService.getVendors().subscribe({
       next: (data: any) => {
-        this.vendors = data.all_info
-          ;
+        this.vendors = data.all_info;
+        this.toastr.success('Vendors loaded successfully', 'Success');
       },
-      error: (err) => console.error('Error fetching vendors:', err),
+      error: (err) => {
+        console.error('Error fetching vendors:', err);
+        this.toastr.error('Failed to load vendors', 'Error');
+      },
     });
   }
 
   addVendor(): void {
     if (this.vendor.vendor_name && this.vendor.gst_number) {
       if (this.editingIndex !== null && this.vendor.id) {
-        // Update existing vendor via API
+        // Update existing vendor
         this.vendorService.updateVendor(this.vendor).subscribe({
           next: (updatedVendor: Vendor) => {
             this.vendors[this.editingIndex!] = updatedVendor;
             this.editingIndex = null;
             this.resetForm();
             this.loadVendors();
+            this.toastr.success('Vendor updated successfully', 'Success');
           },
-          error: (err) => console.error('Error updating vendor:', err),
+          error: (err) => {
+            console.error('Error updating vendor:', err);
+            this.toastr.error('Failed to update vendor', 'Error');
+          },
         });
       } else {
-        // Add new vendor via API
+        // Add new vendor
         this.vendorService.addVendor(this.vendor).subscribe({
           next: (newVendor: Vendor) => {
             this.vendors.push(newVendor);
             this.resetForm();
             this.loadVendors();
+            this.toastr.success('New vendor added successfully', 'Success');
           },
-          error: (err) => console.error('Error adding vendor:', err),
+          error: (err) => {
+            console.error('Error adding vendor:', err);
+            this.toastr.error('Failed to add vendor', 'Error');
+          },
         });
       }
     } else {
-      alert('Vendor Name and GST Number required!');
+      this.toastr.warning('Vendor Name and GST Number are required!', 'Warning');
     }
   }
 
   editVendor(index: number): void {
-    // Load selected vendor details into the form for editing
     this.vendor = { ...this.vendors[index] };
     this.editingIndex = index;
+    this.toastr.info('Editing vendor details', 'Info');
   }
 
   deleteVendor(index: number): void {
@@ -86,12 +101,16 @@ export class AddVendorComponent implements OnInit {
         this.vendorService.deleteVendor(vendorToDelete.id).subscribe({
           next: () => {
             this.vendors.splice(index, 1);
+            this.toastr.success('Vendor deleted successfully', 'Success');
           },
-          error: (err) => console.error('Error deleting vendor:', err),
+          error: (err) => {
+            console.error('Error deleting vendor:', err);
+            this.toastr.error('Failed to delete vendor', 'Error');
+          },
         });
       } else {
-        // If vendor doesn't have an ID, remove locally (if applicable)
         this.vendors.splice(index, 1);
+        this.toastr.warning('Removed untracked vendor', 'Warning');
       }
     }
   }
@@ -108,5 +127,7 @@ export class AddVendorComponent implements OnInit {
       state_code: '',
       phone_number: '',
     };
+    this.editingIndex = null;
+    this.toastr.info('Form reset', 'Info');
   }
 }

@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { DefStockService } from '../def-stock.service';
+import { ToastrService } from 'ngx-toastr';
 
 interface StockItem {
   id: number;
@@ -35,36 +36,31 @@ export class DefStockComponent implements OnInit {
     this.loadStockOptions();
   }
 
+  toastr: ToastrService = inject(ToastrService);
 
 
   loadStockOptions(): void {
     this.defStockService.getDefectiveStock().subscribe(
       (response: any) => {
-        // console.log(response);
         this.stockOptions = response.all_info;
+        this.toastr.success('Stock options loaded successfully', 'Success');
       },
       (error: any) => {
-        console.error('Errorr fetching descriptions:', error);
+        console.error('Error fetching descriptions:', error);
+        this.toastr.error('Failed to load stock options', 'Error');
       }
     );
   }
 
-  // onDescriptionChange(stockOption: any): void {
-  //   const selectedProduct = this.stockOptions.find(
-  //     (p) => p.description === stockOption.description
-  //   );
-  //   if (selectedProduct) {
-  //     this.newItem.price = selectedProduct.price;
-  //   }
-  // }
   onDescriptionChange(description: string): void {
     const selectedProduct = this.stockOptions.find(p => p.description === description);
     if (selectedProduct) {
       this.newItem.price = selectedProduct.price;
+      this.toastr.info(`Price updated to ${selectedProduct.price}`, 'Info');
+    } else {
+      this.toastr.warning('Selected product not found', 'Warning');
     }
   }
-
-
 
   loadServerData(): void {
     this.defStockService.showDefStock().subscribe({
@@ -75,13 +71,13 @@ export class DefStockComponent implements OnInit {
           stock_type: item.stock_type || 'Child Product',
           price: item.price !== undefined ? item.price : 0
         }));
-        // Use the backend-provided IDs instead of generating new ones
         this.nextId = this.stockItems.length > 0 ?
           Math.max(...this.stockItems.map(item => item.id)) + 1 : 1;
+        this.toastr.success('Defective stock data loaded successfully', 'Success');
       },
       error: (error: any) => {
         console.error('Error fetching defective stock from server:', error);
-        alert('Error loading stock data. Please refresh the page.');
+        this.toastr.error('Failed to load defective stock data', 'Error');
       }
     });
   }
@@ -92,13 +88,13 @@ export class DefStockComponent implements OnInit {
   }
 
   addItem(): void {
-    if (this.newItem.stock && this.newItem.stock_type && this.newItem.defective_quantity >= 0 &&
-      this.newItem.reusable_quantity >= 0 && this.newItem.price >= 0 && this.newItem.reason) {
+    if (this.newItem.stock && this.newItem.stock_type &&
+      this.newItem.defective_quantity >= 0 && this.newItem.reusable_quantity >= 0 &&
+      this.newItem.price >= 0 && this.newItem.reason) {
 
       this.defStockService.addDefStock(this.newItem).subscribe(
         (response) => {
-          console.log('Item added successfully', response);
-          this.loadServerData(); // Refresh the list from server
+          this.loadServerData();
           this.newItem = {
             id: 0,
             stock: '',
@@ -108,11 +104,15 @@ export class DefStockComponent implements OnInit {
             price: 0,
             reason: ''
           };
+          this.toastr.success('New defective stock item added successfully', 'Success');
         },
         (error) => {
           console.error('Error adding item', error);
+          this.toastr.error('Failed to add defective stock item', 'Error');
         }
       );
+    } else {
+      this.toastr.warning('Please fill all required fields correctly', 'Warning');
     }
   }
 
@@ -127,12 +127,13 @@ export class DefStockComponent implements OnInit {
 
     this.defStockService.updateDefStock(itemToUpdate).subscribe(
       (response) => {
-        console.log('Item updated successfully', response);
         this.stockItems[index] = { ...response, isEditing: false };
-        this.loadServerData(); // Optionally update with latest response
+        this.loadServerData();
+        this.toastr.success('Stock item updated successfully', 'Success');
       },
       (error) => {
         console.error('Error updating item', error);
+        this.toastr.error('Failed to update stock item', 'Error');
       }
     );
   }
@@ -146,7 +147,7 @@ export class DefStockComponent implements OnInit {
   deleteItem(index: number): void {
     const itemToDelete = this.stockItems[index];
     if (!itemToDelete || !itemToDelete.id) {
-      console.error('Item ID is missing');
+      this.toastr.error('Invalid item ID', 'Error');
       return;
     }
 
@@ -155,15 +156,15 @@ export class DefStockComponent implements OnInit {
 
     this.defStockService.deleteDefStock(itemToDelete.id).subscribe({
       next: () => {
-        console.log('Item deleted successfully');
         this.loadServerData();
+        this.toastr.success('Stock item deleted successfully', 'Success');
       },
       error: (error) => {
         console.error('Error deleting item:', error);
         if (error.status === 400) {
-          // alert('Unable to delete: Item not found in the database.');
+          this.toastr.error('Item not found in the database', 'Error');
         } else {
-          // alert('An error occurred while deleting the item. Please try again.');
+          this.toastr.error('Failed to delete stock item', 'Error');
         }
       }
     });

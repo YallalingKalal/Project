@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   ReactiveFormsModule,
@@ -10,6 +10,8 @@ import {
 } from '@angular/forms';
 import { StaffService, Staff } from '../staff.service';
 import { MatIconModule } from '@angular/material/icon';
+import { ToastrService } from 'ngx-toastr';
+
 
 @Component({
   selector: 'app-staff',
@@ -53,15 +55,24 @@ export class StaffComponent implements OnInit {
     });
   }
 
+  toastr: ToastrService = inject(ToastrService);
+
+
   ngOnInit(): void {
     this.loadStaff();
   }
 
   loadStaff(): void {
-    this.staffService.getStaff().subscribe((data: any) => {
-      this.staffList = data.all_info;
-      this.filteredStaffList = [...this.staffList];
-    });
+    this.staffService.getStaff().subscribe(
+      (data: any) => {
+        this.staffList = data.all_info;
+        this.filteredStaffList = [...this.staffList];
+      },
+      (error) => {
+        this.toastr.error('Failed to load staff list', 'Error');
+        console.error('Load error:', error);
+      }
+    );
   }
 
   // onFileSelected(event: any): void {
@@ -90,9 +101,7 @@ export class StaffComponent implements OnInit {
 
   addStaff(): void {
     if (this.registrationForm.valid) {
-      // Create a new FormData object
       const formData: FormData = new FormData();
-
       // Append each form field to the FormData object.
       // Loop through all keys in your form (except the photo control)
       Object.keys(this.registrationForm.value).forEach((key) => {
@@ -118,31 +127,46 @@ export class StaffComponent implements OnInit {
       if (this.editingStaffIndex !== null) {
         const id = this.staffList[this.editingStaffIndex].id;
         formData.append('id', id?.toString() || '');
-        this.staffService.updateStaff(formData).subscribe((updatedStaff) => {
-          this.staffList[this.editingStaffIndex!] = updatedStaff;
-          this.filteredStaffList = [...this.staffList];
-          this.registrationForm.reset();
-          this.loadStaff();
-          this.photoURL = null;
-          this.showForm = false;
-          this.editingStaffIndex = null;
-          this.viewFormDetails = false; // Ensure view form is closed after edit
-        });
+        this.staffService.updateStaff(formData).subscribe(
+          (updatedStaff) => {
+            this.staffList[this.editingStaffIndex!] = updatedStaff;
+            this.filteredStaffList = [...this.staffList];
+            this.registrationForm.reset();
+            this.loadStaff();
+            this.photoURL = null;
+            this.showForm = false;
+            this.editingStaffIndex = null;
+            this.viewFormDetails = false;
+            this.toastr.success('Staff member updated successfully!', 'Success');
+          },
+          (error) => {
+            this.toastr.error('Failed to update staff member', 'Error');
+            console.error('Update error:', error);
+          }
+        );
       } else {
         // For a new record
-        this.staffService.addStaff(formData).subscribe((newStaff) => {
-          this.staffList.push(newStaff);
-          this.filteredStaffList = [...this.staffList];
-          this.registrationForm.reset();
-          this.loadStaff();
-          this.photoURL = null;
-          this.aadharCardURL = null;
-          this.panCardURL = null;
-          this.showForm = false;
-          this.viewFormDetails = false; // Ensure view form is closed after add
-        });
+        this.staffService.addStaff(formData).subscribe(
+          (newStaff) => {
+            this.staffList.push(newStaff);
+            this.filteredStaffList = [...this.staffList];
+            this.registrationForm.reset();
+            this.loadStaff();
+            this.photoURL = null;
+            this.aadharCardURL = null;
+            this.panCardURL = null;
+            this.showForm = false;
+            this.viewFormDetails = false;
+            this.toastr.success('New staff member added successfully!', 'Success');
+          },
+          (error) => {
+            this.toastr.error('Failed to add staff member', 'Error');
+            console.error('Add error:', error);
+          }
+        );
       }
     } else {
+      this.toastr.warning('Please fill all required fields correctly', 'Form Invalid');
       console.log('Form is invalid');
     }
   }
@@ -162,10 +186,17 @@ export class StaffComponent implements OnInit {
   deleteStaff(index: number): void {
     const staffToDelete = this.staffList[index];
     if (staffToDelete.id && confirm('Are you sure to delete?')) {
-      this.staffService.deleteStaff(staffToDelete.id).subscribe(() => {
-        this.staffList.splice(index, 1);
-        this.filteredStaffList = [...this.staffList];
-      });
+      this.staffService.deleteStaff(staffToDelete.id).subscribe(
+        () => {
+          this.staffList.splice(index, 1);
+          this.filteredStaffList = [...this.staffList];
+          this.toastr.success('Staff member deleted successfully!', 'Success');
+        },
+        (error) => {
+          this.toastr.error('Failed to delete staff member', 'Error');
+          console.error('Delete error:', error);
+        }
+      );
     }
   }
 

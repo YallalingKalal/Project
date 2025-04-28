@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, NgForm } from '@angular/forms';
 import { ProductsService, Product } from '../services/products.service';
 import { MatIconModule } from '@angular/material/icon';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-stock',
@@ -33,23 +34,30 @@ export class StockComponent implements OnInit {
     this.loadProducts();
   }
 
+  toastr: ToastrService = inject(ToastrService);
+
+
   // Load products from the API
   loadProducts(): void {
     this.productsService.getProducts().subscribe({
       next: (response: any) => {
-        // Use 'any' for flexibility with API response
         if (response && response) {
           this.productList = response.all_info.map((product: Product) => ({
             ...product,
-            quantity: product.quantity ?? 1, // Set default quantity to 1 if missing
-            total: product.total ?? product.price, // Set default total to price if missing
+            quantity: product.quantity ?? 1,
+            total: product.total ?? product.price,
           }));
           this.filterProductList('All');
+          this.toastr.success('Stock loaded successfully', 'Success');
         } else {
+          this.toastr.error('Invalid response from server', 'Error');
           console.error('Invalid API response:', response);
         }
       },
-      error: (err) => console.error('Error loading products:', err),
+      error: (err) => {
+        this.toastr.error('Failed to load stock items', 'Error');
+        console.error('Error loading products:', err);
+      },
     });
   }
 
@@ -68,9 +76,8 @@ export class StockComponent implements OnInit {
 
       this.productsService.addProduct(newProduct).subscribe({
         next: () => {
-          this.loadProducts(); // Reload products
-          this.showAddStockForm = false; // Hide the form
-          // Reset the form and the model
+          this.loadProducts();
+          this.showAddStockForm = false;
           this.newStock = {
             description: '',
             supplier: '',
@@ -81,11 +88,17 @@ export class StockComponent implements OnInit {
             stock_type: 'Parent',
           };
           form.resetForm({
-            stock_type: 'Parent', // Keep default
+            stock_type: 'Parent',
           });
+          this.toastr.success('New stock item added successfully', 'Success');
         },
-        error: (err) => console.error('Error adding product:', err),
+        error: (err) => {
+          this.toastr.error('Failed to add new stock item', 'Error');
+          console.error('Error adding product:', err);
+        },
       });
+    } else {
+      this.toastr.warning('Please fill all required fields correctly', 'Warning');
     }
   }
 
@@ -135,12 +148,17 @@ export class StockComponent implements OnInit {
             }
             this.editingIndex = null;
             this.updateQuantity();
+            this.toastr.success('Stock item updated successfully', 'Success');
           },
-          error: (err) => console.error('Error updating product:', err),
+          error: (err) => {
+            this.toastr.error('Failed to update stock item', 'Error');
+            console.error('Error updating product:', err);
+          },
         });
       } else {
         this.editingIndex = null;
         this.updateQuantity();
+        this.toastr.warning('Cannot update: Invalid product ID', 'Warning');
       }
     }
   }
@@ -148,19 +166,26 @@ export class StockComponent implements OnInit {
   // Remove product via API call
   removeProduct(index: number): void {
     const product = this.filteredProductList[index];
-    if (product.id) {
-      this.productsService.deleteProduct(product).subscribe({
-        next: () => {
-          this.productList = this.productList.filter(
-            (p) => p.id !== product.id
-          );
-          this.filterProductList('All');
-        },
-        error: (err) => console.error('Error deleting product:', err),
-      });
-    } else {
-      this.productList.splice(index, 1);
-      this.filterProductList('All');
+    if (confirm('Are you sure you want to delete this item?')) {
+      if (product.id) {
+        this.productsService.deleteProduct(product).subscribe({
+          next: () => {
+            this.productList = this.productList.filter(
+              (p) => p.id !== product.id
+            );
+            this.filterProductList('All');
+            this.toastr.success('Stock item deleted successfully', 'Success');
+          },
+          error: (err) => {
+            this.toastr.error('Failed to delete stock item', 'Error');
+            console.error('Error deleting product:', err);
+          },
+        });
+      } else {
+        this.productList.splice(index, 1);
+        this.filterProductList('All');
+        this.toastr.warning('Removed untracked item', 'Warning');
+      }
     }
   }
 }

@@ -4,11 +4,17 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { ToastrService } from 'ngx-toastr';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [FormsModule, CommonModule, HttpClientModule],
+  imports: [
+    FormsModule,
+    CommonModule,
+    HttpClientModule,
+    MatIconModule
+  ],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
 })
@@ -17,6 +23,7 @@ export class LoginComponent {
     username: '',
     password: '',
   };
+  showPassword: boolean = false;
 
   router = inject(Router);
   http = inject(HttpClient);
@@ -50,4 +57,7 @@ export class LoginComponent {
       });
   }
 
+  togglePassword() {
+    this.showPassword = !this.showPassword;
+  }
 }

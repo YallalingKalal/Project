@@ -90,8 +90,8 @@
         <td>{{ v.state_code }}</td>
         <td>{{ v.phone_number }}</td>
         <td>
-          <mat-icon (click)="editVendor(i)">edit</mat-icon>
-          <mat-icon (click)="deleteVendor(i)">delete</mat-icon>
+          <mat-icon class="edit" (click)="editVendor(i)">edit</mat-icon>
+          <mat-icon class="delete" (click)="deleteVendor(i)">delete</mat-icon>
         </td>
       </tr>
     </tbody>

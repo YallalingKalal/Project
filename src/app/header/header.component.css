@@ -1,19 +1,24 @@
+/* Router Outlet Container */
 .app-container {
-  padding-left: 40px;
-  padding-right: 40px;
-  padding-top: 84px;
-  min-height: calc(100vh - 146px);
+  padding: 24px;
+  height: calc(100vh - 64px);
+  overflow-y: auto;
+  background-color: #f8f9fa;
 }
-@media only screen and (max-width: 1024px) {
-  ::ng-deep .mat-drawer-content .app-container {
-    padding-left: 15px;
-    padding-right: 15px;
-  }
+
+/* Container Styles */
+.example-container {
+  height: 100vh;
+}
+
+.example-sidenav {
+  width: 280px;
+  /* background: linear-gradient(180deg, #1a237e 0%, #283593 100%); */
+  border: none;
+  box-shadow: 4px 0 8px rgba(0, 0, 0, 0.1);
 }
 
 mat-drawer {
-  background-color: #003f5c;
-  width: 340px;
   height: 100%;
 }
 
@@ -75,6 +80,7 @@ mat-toolbar {
   justify-content: space-between;
   padding: 0 16px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
 }
 
 /* Icon Button Styling */
@@ -93,11 +99,13 @@ mat-toolbar button:hover {
   flex: 1;
   display: flex;
   justify-content: center;
+  align-items: center;
 }
 
 /* Title Styling */
 .title {
   text-align: center;
+  padding: 0 16px;
 }
 
 .title-heading {
@@ -157,4 +165,40 @@ mat-toolbar nav button.btn {
 
 mat-toolbar nav button.btn:hover {
   background-color: #a777e3; /* Complementary accent on hover */
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .example-sidenav {
+    width: 240px;
+  }
+
+  .title-heading {
+    font-size: 24px;
+  }
+
+  mat-toolbar {
+    padding: 0 16px;
+  }
+
+  .app-container {
+    padding: 16px;
+  }
+}
+
+/* Animation Keyframes */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Apply animations */
+.mat-toolbar {
+  animation: fadeIn 0.3s ease-out;
 }
