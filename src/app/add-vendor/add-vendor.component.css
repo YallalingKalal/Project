@@ -7,6 +7,8 @@
   border-radius: 1rem;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  overflow-x: auto;
+  /* Add horizontal scroll for responsiveness */
 }
 
 /* Headings */
@@ -71,6 +73,8 @@ table {
   width: 100%;
   border-collapse: collapse;
   margin-top: 1rem;
+  min-width: 600px;
+  /* Ensure table doesn't collapse too much */
 }
 
 table th,
@@ -134,6 +138,17 @@ table th {
   table td {
     font-size: 0.9rem;
     padding: 0.5rem;
+  }
+}
+
+@media (max-width: 600px) {
+
+  table th:nth-child(4),
+  table td:nth-child(4),
+  table th:nth-child(6),
+  table td:nth-child(6) {
+    display: none;
+    /* Hide less important columns on smaller screens */
   }
 }
 

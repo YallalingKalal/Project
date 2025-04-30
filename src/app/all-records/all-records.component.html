@@ -33,8 +33,30 @@
           <button class="btn1" (click)="printInvoice(invoice.invoice_number)">
             <mat-icon>print</mat-icon>
           </button>
-          <button class="btn2">
+          <!-- <button class="btn2" (click)="deleteInvoice(invoice.invoice_number)">
             <mat-icon>delete</mat-icon>
+          </button> -->
+          <button
+            class="btn2"
+            (click)="deleteInvoice(invoice.invoice_number)"
+            [disabled]="deletingInvoiceId === invoice.invoice_number"
+          >
+            <ng-container
+              *ngIf="
+                deletingInvoiceId === invoice.invoice_number;
+                else deleteIcon
+              "
+            >
+              <mat-progress-spinner
+                diameter="20"
+                mode="indeterminate"
+                color="warn"
+              >
+              </mat-progress-spinner>
+            </ng-container>
+            <ng-template #deleteIcon>
+              <mat-icon>delete</mat-icon>
+            </ng-template>
           </button>
         </td>
       </tr>

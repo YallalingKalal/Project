@@ -96,11 +96,11 @@ export class InvoiceApiService {
     );
   }
 
-  deleteInvoice(invoiceData: InvoiceData): Observable<any> {
-    return this.http.delete<InvoiceData>(
-      `${this.deleteApiUrl}/${invoiceData.id}/`
-    );
+  deleteInvoice(id: number): Observable<any> {
+    return this.http.delete(`${this.deleteApiUrl}/${id}/`);
   }
+
+
 
   // updateVendor(vendor: Vendor): Observable<Vendor> {
   //     // If your update API does not require the ID in the URL, remove it from the URL.

@@ -23,9 +23,13 @@ interface LineItem {
 
 interface InvoiceData {
   vendor_name: string;
+  vendor_code: any;
   gst_no: string;
   consignee_name: string;
   consignee_state_code: string;
+  consignee_pan: any;
+  consignee_state: string;
+  consignee_p_no: any;
   consignee_address: string;
   remarks: string;
   challan_date: string;
@@ -59,9 +63,13 @@ interface InvoiceData {
 export class BillingComponent implements OnInit {
   invoiceData: InvoiceData = {
     vendor_name: '',
+    vendor_code: '',
     gst_no: '',
     consignee_name: '',
     consignee_state_code: '',
+    consignee_state: '',
+    consignee_p_no: '',
+    consignee_pan: '',
     consignee_address: '',
     remarks: '',
     challan_date: '',
@@ -101,10 +109,14 @@ export class BillingComponent implements OnInit {
   onVendorChange(vendor: any): void {
     if (vendor) {
       this.invoiceData.vendor_name = vendor.vendor_name;
+      this.invoiceData.vendor_code = vendor.vendor_code;
       this.invoiceData.gst_no = vendor.gst_number;
       this.invoiceData.consignee_name = vendor.consignee_name || '';
-      this.invoiceData.consignee_state_code = vendor.consignee_state_code || '';
+      this.invoiceData.consignee_state_code = vendor.state_code || '';
       this.invoiceData.consignee_address = vendor.address || '';
+      this.invoiceData.consignee_pan = vendor.pan || '';
+      this.invoiceData.consignee_p_no = vendor.p_no || '';
+      this.invoiceData.consignee_state = vendor.state || '';
       this.toastr.info('Vendor details updated', 'Info');
     } else {
       this.toastr.warning('No vendor selected', 'Warning');
@@ -282,9 +294,13 @@ export class BillingComponent implements OnInit {
   private resetForm(): void {
     this.invoiceData = {
       vendor_name: '',
+      vendor_code: '',
       gst_no: '',
       consignee_name: '',
       consignee_state_code: '',
+      consignee_state: '',
+      consignee_p_no: '',
+      consignee_pan: '',
       consignee_address: '',
       remarks: '',
       challan_date: '',

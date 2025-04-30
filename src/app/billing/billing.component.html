@@ -8,11 +8,7 @@
     <div class="info-left">
       <div class="form-row">
         <label for="vendorName">Vendor Name:</label>
-        <select
-          id="vendorName"
-          [(ngModel)]="selectedVendor"
-          (ngModelChange)="onVendorChange($event)"
-        >
+        <select id="vendorName" [(ngModel)]="selectedVendor" (ngModelChange)="onVendorChange($event)">
           <option *ngFor="let item of vendorsArray" [ngValue]="item">
             {{ item.vendor_name }}
           </option>
@@ -20,40 +16,40 @@
       </div>
 
       <div class="form-row">
+        <label for="vendorNo">Vendor No.:</label>
+        <input type="text" id="vendorNo" [(ngModel)]="invoiceData.vendor_code" />
+      </div>
+      <div class="form-row">
         <label for="gstNo">GST No.:</label>
         <input type="text" id="gstNo" [(ngModel)]="invoiceData.gst_no" />
       </div>
       <div class="form-row">
         <label for="consignee">Consignee:</label>
-        <input
-          type="text"
-          id="consignee"
-          [(ngModel)]="invoiceData.consignee_name"
-        />
+        <input type="text" id="consignee" [(ngModel)]="invoiceData.consignee_name" />
+      </div>
+      <div class="form-row">
+        <label for="consigneePan">pan:</label>
+        <input type="text" id="consigneePan" [(ngModel)]="invoiceData.consignee_pan" />
+      </div>
+      <div class="form-row">
+        <label for="consigneePno">pNo:</label>
+        <input type="text" id="consigneePno" [(ngModel)]="invoiceData.consignee_p_no" />
+      </div>
+      <div class="form-row">
+        <label for="state">state:</label>
+        <input type="text" id="state" [(ngModel)]="invoiceData.consignee_state" />
       </div>
       <div class="form-row">
         <label for="consigneeStateCode">Consignee State Code:</label>
-        <input
-          type="text"
-          id="consigneeStateCode"
-          [(ngModel)]="invoiceData.consignee_state_code"
-        />
+        <input type="text" id="consigneeStateCode" [(ngModel)]="invoiceData.consignee_state_code" />
       </div>
       <div class="form-row">
         <label for="customerAddress">Customer Address:</label>
-        <textarea
-          id="customerAddress"
-          rows="2"
-          [(ngModel)]="invoiceData.consignee_address"
-        ></textarea>
+        <textarea id="customerAddress" rows="2" [(ngModel)]="invoiceData.consignee_address"></textarea>
       </div>
       <div class="form-row">
         <label for="remarks">Remarks:</label>
-        <textarea
-          id="remarks"
-          rows="1"
-          [(ngModel)]="invoiceData.remarks"
-        ></textarea>
+        <textarea id="remarks" rows="1" [(ngModel)]="invoiceData.remarks"></textarea>
       </div>
       <div class="bank-details">
         <h4>Bank Details</h4>
@@ -81,35 +77,19 @@
         </div>
         <div class="form-row">
           <label for="challanNo">Challan No.:</label>
-          <input
-            type="text"
-            id="challanNo"
-            [(ngModel)]="invoiceData.challan_number"
-          />
+          <input type="text" id="challanNo" [(ngModel)]="invoiceData.challan_number" />
         </div>
         <div class="form-row">
           <label for="challanNo">Challan Date:</label>
-          <input
-            type="date"
-            id="challanDate"
-            [(ngModel)]="invoiceData.challan_date"
-          />
+          <input type="date" id="challanDate" [(ngModel)]="invoiceData.challan_date" />
         </div>
         <div class="form-row">
           <label for="orderNo">Order No.:</label>
-          <input
-            type="text"
-            id="orderNo"
-            [(ngModel)]="invoiceData.order_number"
-          />
+          <input type="text" id="orderNo" [(ngModel)]="invoiceData.order_number" />
         </div>
         <div class="form-row">
           <label for="orderDate">Order Date:</label>
-          <input
-            type="date"
-            id="orderDate"
-            [(ngModel)]="invoiceData.order_date"
-          />
+          <input type="date" id="orderDate" [(ngModel)]="invoiceData.order_date" />
         </div>
         <div class="form-row">
           <label for="vehNo">Veh.No.:</label>
@@ -129,19 +109,11 @@
         </div>
         <div class="form-row">
           <label for="timeOfSupply">Time of Supply:</label>
-          <input
-            type="text"
-            id="timeOfSupply"
-            [(ngModel)]="invoiceData.time_of_supply"
-          />
+          <input type="text" id="timeOfSupply" [(ngModel)]="invoiceData.time_of_supply" />
         </div>
         <div class="form-row">
           <label for="paymentTerms">Payment Terms:</label>
-          <input
-            type="text"
-            id="paymentTerms"
-            [(ngModel)]="invoiceData.payment_terms"
-          />
+          <input type="text" id="paymentTerms" [(ngModel)]="invoiceData.payment_terms" />
         </div>
         <div class="form-row">
           <label for="document">Document:</label>
@@ -149,27 +121,15 @@
         </div>
         <div class="form-row">
           <label for="deliveryTerms">Delivery Terms:</label>
-          <input
-            type="text"
-            id="deliveryTerms"
-            [(ngModel)]="invoiceData.delivery_terms"
-          />
+          <input type="text" id="deliveryTerms" [(ngModel)]="invoiceData.delivery_terms" />
         </div>
         <div class="form-row">
           <label for="transport">Transport:</label>
-          <input
-            type="text"
-            id="transport"
-            [(ngModel)]="invoiceData.transport"
-          />
+          <input type="text" id="transport" [(ngModel)]="invoiceData.transport" />
         </div>
         <div class="form-row">
           <label for="placeOfSupply">Place Of Supply:</label>
-          <input
-            type="text"
-            id="placeOfSupply"
-            [(ngModel)]="invoiceData.place_of_supply"
-          />
+          <input type="text" id="placeOfSupply" [(ngModel)]="invoiceData.place_of_supply" />
         </div>
         <div class="form-row">
           <label for="lrNo">L.R. No.:</label>
@@ -206,15 +166,9 @@
         <tbody>
           <tr *ngFor="let item of invoiceData.items; let i = index">
             <td>
-              <select
-                [(ngModel)]="item.description"
-                (ngModelChange)="onDescriptionChange(item)"
-              >
+              <select [(ngModel)]="item.description" (ngModelChange)="onDescriptionChange(item)">
                 <!-- <option [ngValue]="null">-- Select Product --</option> -->
-                <option
-                  *ngFor="let description of descriptionsArray"
-                  [ngValue]="description.description"
-                >
+                <option *ngFor="let description of descriptionsArray" [ngValue]="description.description">
                   {{ description.description }}
                 </option>
               </select>
@@ -296,11 +250,11 @@
             </td>
           </tr>
           <tr>
-           
+
           </tr>
-          
+
           <tr>
-            
+
             <td colspan="3" class="add-product-row">
               <button class="add-line-item" (click)="addLineItem()">
                 Add Product

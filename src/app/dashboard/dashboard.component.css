@@ -195,31 +195,37 @@
 .action-button-schemes {
   background-color: #3498db;
   color: white;
+  justify-content: space-evenly;
 }
 
 .action-button-records {
   background-color: #e67e22;
   color: white;
+  justify-content: space-evenly;
 }
 
 .action-button-funding {
   background-color: #27ae60;
   color: white;
+  justify-content: space-evenly;
 }
 
 .action-button-admission {
   background-color: #8e44ad;
   color: white;
+  justify-content: space-evenly;
 }
 
 .action-button-contacts {
   background-color: #f39c12;
   color: white;
+  justify-content: space-evenly;
 }
 
 .action-button-settings {
   background-color: #34495e;
   color: white;
+  justify-content: space-evenly;
 }
 
 /* Footer Styling */
@@ -342,6 +348,6 @@
 }
 
 mat-icon {
-  color: #777;
+  color: #fff;
   /* Default icon color */
 }

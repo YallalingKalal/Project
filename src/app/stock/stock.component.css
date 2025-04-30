@@ -93,6 +93,56 @@
   outline: none;
 }
 
+/* Upload Form Styles */
+.upload-form {
+  background: #f8f9fa;
+  padding: 2rem;
+  border-radius: 12px;
+  margin-bottom: 2rem;
+  animation: slideDown 0.3s ease;
+}
+
+.upload-form h3 {
+  color: #2c3e50;
+  margin-bottom: 1rem;
+}
+
+.upload-info {
+  font-size: 0.9em;
+  color: gray;
+  margin-bottom: 10px;
+}
+
+.upload-form input[type="file"] {
+  padding: 10px;
+  margin-bottom: 1rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 0.95rem;
+}
+
+.upload-form .error-message {
+  color: red;
+  margin-top: 0.5rem;
+}
+
+.upload-form button {
+  padding: 0.8rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  background: #27ae60; /* Green color for upload */
+  color: white;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.upload-form button:hover {
+  background: #219653;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(39, 174, 96, 0.3);
+}
+
 /* Table Styles */
 .table-container {
   overflow-x: auto;

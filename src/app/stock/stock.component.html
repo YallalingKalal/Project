@@ -2,64 +2,70 @@
   <h2 class="sticky-header">Stock Management</h2>
 
   <div class="button-container">
-    <!-- Parent Product Button -->
     <button (click)="filterProductList('Parent')">Parent Products</button>
 
-    <!-- Child Product Button -->
     <button (click)="filterProductList('Child')">Child Products</button>
 
-    <!-- Show All Data Button -->
     <button (click)="filterProductList('All')">Show All Data</button>
 
-    <!-- Add New Stock Button -->
     <button (click)="showAddStockForm = !showAddStockForm">
       Add New Stock
     </button>
+
+    <button (click)="showUploadForm = !showUploadForm">
+      Upload Documents
+    </button>
   </div>
 
-  <!-- Add New Stock Form -->
   <div *ngIf="showAddStockForm" class="add-stock-form">
-    <form #form="ngForm" (ngSubmit)="addNewStock(form)">
-      <h3>Add New Stock</h3>
+    <h3>Add New Stock</h3>
 
-      <input
-        type="text"
-        name="description"
-        placeholder="Name"
-        [(ngModel)]="newStock.description"
-        required
-      />
-      <input
-        type="text"
-        name="supplier"
-        placeholder="Supplier Name"
-        [(ngModel)]="newStock.supplier"
-        required
-      />
-      <input
-        type="number"
-        name="price"
-        placeholder="Price"
-        [(ngModel)]="newStock.price"
-        required
-      />
-      <input
-        type="text"
-        name="hsn_code"
-        placeholder="HSN No"
-        [(ngModel)]="newStock.hsn_code"
-        required
-      />
-      <select name="stock_type" [(ngModel)]="newStock.stock_type" required>
-        <option value="Parent">Parent</option>
-        <option value="Child">Child</option>
-      </select>
+    <input
+      type="text"
+      name="description"
+      placeholder="Name"
+      [(ngModel)]="newStock.description"
+      required
+    />
+    <input
+      type="text"
+      name="supplier"
+      placeholder="Supplier Name"
+      [(ngModel)]="newStock.supplier"
+      required
+    />
+    <input
+      type="number"
+      name="price"
+      placeholder="Price"
+      [(ngModel)]="newStock.price"
+      required
+    />
+    <input
+      type="text"
+      name="hsn_code"
+      placeholder="HSN No"
+      [(ngModel)]="newStock.hsn_code"
+      required
+    />
+    <select name="stock_type" [(ngModel)]="newStock.stock_type" required>
+      <option value="Parent">Parent</option>
+      <option value="Child">Child</option>
+    </select>
 
-      <button type="submit">Add Stock</button>
-    </form>
+    <button type="submit">Add Stock</button>
   </div>
 
-  <!-- Table -->
+  <div *ngIf="showUploadForm" class="upload-form">
+    <h3>Upload Documents</h3>
+    <p class="upload-info">Maximum file size allowed is 1MB.</p>
+    <input type="file" (change)="handleFileUpload($event)" multiple />
+    <div *ngIf="uploadErrorMessage" class="error-message">
+      {{ uploadErrorMessage }}
+    </div>
+    <button (click)="uploadSelectedFiles()">Upload</button>
+  </div>
+
   <h3>Selected Products</h3>
   <div class="table-container">
     <table>
@@ -144,5 +150,8 @@
         </tr>
       </tbody>
     </table>
+    <div *ngIf="filteredProductList.length === 0">
+      <p>No products found based on the filter.</p>
+    </div>
   </div>
 </div>
