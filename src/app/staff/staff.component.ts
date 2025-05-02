@@ -175,7 +175,7 @@ export class StaffComponent implements OnInit {
     this.editingStaffIndex = index;
     const staffToEdit = this.staffList[index];
     this.registrationForm.patchValue(staffToEdit);
-    this.photoURL = null;
+    this.photoURL = staffToEdit.photo || null;
     this.aadharCardURL = null;
     this.panCardURL = null;
     this.showForm = true;
@@ -232,7 +232,7 @@ export class StaffComponent implements OnInit {
   viewStaffDetails(staff: Staff): void {
     this.staffDetails = staff;
     this.registrationForm.patchValue(staff);
-    this.photoURL = staff?.photo || null;
+    this.photoURL = staff.photo || null;
     this.aadharCardURL = staff?.['aadhar_card'] || null;
     this.panCardURL = staff?.['pan_card'] || null;
     this.viewFormDetails = true;

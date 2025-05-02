@@ -18,7 +18,7 @@ export class AllRecordsComponent implements OnInit {
   deletingInvoiceId: number | null = null;
   toastr: ToastrService = inject(ToastrService);
 
-  constructor(private invoiceService: InvoiceApiService) { }
+  constructor(private invoiceService: InvoiceApiService) {}
 
   ngOnInit() {
     this.getAllInvoices();
@@ -80,41 +80,61 @@ export class AllRecordsComponent implements OnInit {
           return;
         }
 
-        const itemRows = invoice.items
-          .map(
-            (item: any) => `
-              <tr>
-                <td style="padding: 4px; font-size: 10px;">${item.description}</td>
-                <td style="padding: 4px; font-size: 10px;">${item.hsn_code}</td>
-                <td style="padding: 4px; font-size: 10px; text-align: right;">${item.quantity}</td>
-                <td style="padding: 4px; font-size: 10px; text-align: right;">₹${item.unit_rate}</td>
-                <td style="padding: 4px; font-size: 10px; text-align: right;">₹${item.total_value}</td>
-              </tr>`
-          )
-          .join('');
+        const items = invoice.items || [];
 
-        const taxRows = `
+        // ✅ Calculate dynamic totals
+        const getTaxableAmount = (item: any): number => {
+          const gstRate = item.gst_rate || 0;
+          const totalWithTax = item.grand_total || item.total_value || 0;
+        
+          if (gstRate > 0) {
+            return totalWithTax / (1 + gstRate / 100);
+          } else {
+            return totalWithTax;
+          }
+        };
+        
+        const getCGSTAmount = (item: any): number => {
+          const taxable = getTaxableAmount(item);
+          const gstRate = item.gst_rate || 0;
+        
+          // Split 50-50 if intrastate (assumption here)
+          return (gstRate > 0) ? taxable * (gstRate / 2) / 100 : 0;
+        };
+        
+        const getSGSTAmount = (item: any): number => {
+          const taxable = getTaxableAmount(item);
+          const gstRate = item.gst_rate || 0;
+        
+          return (gstRate > 0) ? taxable * (gstRate / 2) / 100 : 0;
+        };
+        
+        const getIGSTAmount = (item: any): number => {
+          const taxable = getTaxableAmount(item);
+          const gstRate = item.gst_rate || 0;
+        
+          // If inter-state (e.g., implement based on state comparison)
+          return 0; // assuming CGST+SGST is used
+        };
+        
+        // TOTALS
+        const taxableAmount = items.reduce((sum: number, item: any) => sum + getTaxableAmount(item), 0);
+        const cgstTotal = items.reduce((sum: number, item: any) => sum + getCGSTAmount(item), 0);
+        const sgstTotal = items.reduce((sum: number, item: any) => sum + getSGSTAmount(item), 0);
+        const igstTotal = items.reduce((sum: number, item: any) => sum + getIGSTAmount(item), 0);
+        
+        const totalAmount = items.reduce((sum: number, item: any) => sum + (item.grand_total || item.total_value || 0), 0);
+        
+
+
+        const itemRows = items.map((item: any) => `
           <tr>
-            <td colspan="4" class="right bold" style="padding-top: 5px; padding-bottom: 5px; font-size: 10px;">Taxable Amount</td>
-            <td style="padding-top: 5px; padding-bottom: 5px; font-size: 10px; text-align: right;">₹${invoice.taxable_amount || 0}</td>
-          </tr>
-          <tr>
-            <td colspan="4" class="right" style="padding-top: 2px; padding-bottom: 2px; font-size: 10px;">CGST (${invoice.cgst || 0}%)</td>
-            <td style="padding-top: 2px; padding-bottom: 2px; font-size: 10px; text-align: right;">₹${invoice.cgst_amount || 0}</td>
-          </tr>
-          <tr>
-            <td colspan="4" class="right" style="padding-top: 2px; padding-bottom: 2px; font-size: 10px;">SGST (${invoice.sgst || 0}%)</td>
-            <td style="padding-top: 2px; padding-bottom: 2px; font-size: 10px; text-align: right;">₹${invoice.sgst_amount || 0}</td>
-          </tr>
-          <tr>
-            <td colspan="4" class="right" style="padding-top: 2px; padding-bottom: 2px; font-size: 10px;">IGST (${invoice.igst || 0}%)</td>
-            <td style="padding-top: 2px; padding-bottom: 2px; font-size: 10px; text-align: right;">₹${invoice.igst_amount || 0}</td>
-          </tr>
-          <tr>
-            <td colspan="4" class="right bold" style="padding-top: 5px; font-size: 10px;">Total Amount</td>
-            <td class="bold" style="padding-top: 5px; font-size: 10px; text-align: right;">₹${invoice.total_amount}</td>
-          </tr>
-        `;
+            <td style="padding: 4px; font-size: 10px;">${item.description}</td>
+            <td style="padding: 4px; font-size: 10px;">${item.hsn_code}</td>
+            <td style="padding: 4px; font-size: 10px; text-align: right;">${item.quantity}</td>
+            <td style="padding: 4px; font-size: 10px; text-align: right;">₹${item.unit_rate}</td>
+            <td style="padding: 4px; font-size: 10px; text-align: right;">₹${item.total_value}</td>
+          </tr>`).join('');
 
         const printWindow = window.open('', '', 'width=750,height=900');
         if (!printWindow) {
@@ -164,7 +184,7 @@ export class AllRecordsComponent implements OnInit {
                 </p>
               </div>
               <hr>
-              <table class="table" style="margin-top: 10px;">
+              <table class="table">
                 <tr><th style="width: 20%;">Invoice No</th><td style="width: 30%;">${invoice.invoice_number}</td><th style="width: 20%;">Date</th><td style="width: 30%;">${invoice.invoice_date}</td></tr>
                 <tr><th>GSTIN</th><td>${invoice.gst_no}</td><th>Consignee Name</th><td>${invoice.consignee_name}</td></tr>
                 <tr><th>State</th><td>${invoice.consignee_state}</td><th>Vendor Code</th><td>${invoice.vendor_code}</td></tr>
@@ -193,10 +213,10 @@ export class AllRecordsComponent implements OnInit {
                 ${itemRows}
               </table>
               <table class="total-table" style="margin-top: 10px;">
-                <tr><td colspan="3" class="right bold">Taxable Amount</td><td class="right">₹${invoice.taxable_amount || 0}</td></tr>
-                <tr><td colspan="3" class="right">CGST (${invoice.cgst_rate || 0}%)</td><td class="right">₹${invoice.cgst_amount || 0}</td></tr>
-                <tr><td colspan="3" class="right">SGST (${invoice.sgst_rate || 0}%)</td><td class="right">₹${invoice.sgst_amount || 0}</td></tr>
-                <tr><td colspan="3" class="right">IGST (${invoice.igst_rate || 0}%)</td><td class="right">₹${invoice.igst_amount || 0}</td></tr>
+                <tr><td colspan="3" class="right bold">Taxable Amount</td><td class="right">₹${taxableAmount}</td></tr>
+                <tr><td colspan="3" class="right">CGST (0%)</td><td class="right">₹${cgstTotal}</td></tr>
+                <tr><td colspan="3" class="right">SGST (0%)</td><td class="right">₹${sgstTotal}</td></tr>
+                <tr><td colspan="3" class="right">IGST (0%)</td><td class="right">₹${igstTotal}</td></tr>
                 <tr><td colspan="3" class="right bold">Total Amount</td><td class="right bold">₹${invoice.total_amount}</td></tr>
               </table>
               <hr>
@@ -223,7 +243,6 @@ export class AllRecordsComponent implements OnInit {
                   <p style="text-align: right; margin-top: 5px;"><strong>Authorised Signature</strong></p>
                 </div>
               </div>
-
               <button class="print-button" onclick="window.print();"><b>Print Invoice</b></button>
             </div>
           </body>
