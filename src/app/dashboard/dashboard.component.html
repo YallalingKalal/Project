@@ -3,7 +3,7 @@
     <div class="small-card card-parent-product">
       <p>Parent Product</p>
       <div class="inner-small-card">
-        <h3>001</h3>
+        <h3>{{ dashboardData?.Parent_Product || "---" }}</h3>
         <mat-icon>category</mat-icon>
       </div>
     </div>
@@ -11,7 +11,7 @@
     <div class="small-card card-child-product">
       <p>Child Product</p>
       <div class="inner-small-card">
-        <h3>001</h3>
+        <h3>{{ dashboardData?.Child_Product || "---" }}</h3>
         <mat-icon>layers</mat-icon>
       </div>
     </div>
@@ -19,7 +19,7 @@
     <div class="small-card card-defective-stock">
       <p>Defective Stock</p>
       <div class="inner-small-card">
-        <h3>001</h3>
+        <h3>{{ dashboardData?.Defective_Stock || "---" }}</h3>
         <mat-icon>warning</mat-icon>
       </div>
     </div>
@@ -27,7 +27,7 @@
     <div class="small-card card-vendor-count">
       <p>Vendor Count</p>
       <div class="inner-small-card">
-        <h3>001</h3>
+        <h3>{{ dashboardData?.Vendor || "---" }}</h3>
         <mat-icon>business</mat-icon>
       </div>
     </div>
@@ -35,7 +35,7 @@
     <div class="small-card card-suppu-count">
       <p>Supplier Count</p>
       <div class="inner-small-card">
-        <h3>001</h3>
+        <h3>{{ dashboardData?.Supplier || "---" }}</h3>
         <mat-icon>local_shipping</mat-icon>
       </div>
     </div>
@@ -43,7 +43,7 @@
     <div class="small-card card-total-invoice">
       <p>Total Generated Invoice</p>
       <div class="inner-small-card">
-        <h3>001</h3>
+        <h3>{{ dashboardData?.Total_Invoice || "---" }}</h3>
         <mat-icon>receipt_long</mat-icon>
       </div>
     </div>
@@ -115,28 +115,48 @@
             </mat-card-header>
             <mat-card-content>
               <div class="action-buttons">
-                <button routerLink="/billing" class="action-button action-button-schemes" mat-raised-button
-                  color="primary">
+                <button
+                  routerLink="/billing"
+                  class="action-button action-button-schemes"
+                  mat-raised-button
+                  color="primary"
+                >
                   <mat-icon>receipt_long</mat-icon>
                   <span>Create-Bill-Invoice</span>
                 </button>
-                <button class="action-button action-button-records" mat-raised-button color="accent"
-                  routerLink="/stock">
+                <button
+                  class="action-button action-button-records"
+                  mat-raised-button
+                  color="accent"
+                  routerLink="/stock"
+                >
                   <mat-icon>store</mat-icon>
                   <span>Add-New-Stock</span>
                 </button>
-                <button class="action-button action-button-funding" mat-raised-button color="primary"
-                  routerLink="/add-vendor">
+                <button
+                  class="action-button action-button-funding"
+                  mat-raised-button
+                  color="primary"
+                  routerLink="/add-vendor"
+                >
                   <mat-icon>person_add</mat-icon>
                   <span>Add-New-Vendor</span>
                 </button>
-                <button class="action-button action-button-admission" mat-raised-button color="accent"
-                  routerLink="/supplier">
+                <button
+                  class="action-button action-button-admission"
+                  mat-raised-button
+                  color="accent"
+                  routerLink="/supplier"
+                >
                   <mat-icon>person_add</mat-icon>
                   <span>Add-New-Supplier</span>
                 </button>
-                <button class="action-button action-button-contacts" mat-raised-button color="warn" routerLink="/staff">
-
+                <button
+                  class="action-button action-button-contacts"
+                  mat-raised-button
+                  color="warn"
+                  routerLink="/staff"
+                >
                   <mat-icon>group</mat-icon>
                   <span>Add-New-Staff</span>
                 </button>
@@ -153,14 +173,17 @@
   </div>
 
   <div class="app-footer">
-    <a href="https://wa.me/917517311326?text=Hello%20I'm%20visiting%20chordztechnologies.com%20and%20I'm%20interested%20to%20know%20your%20services"
-      target="_blank" class="float"><i class="fab fa-whatsapp my-float" style="margin-top: 15px"></i></a>
+    <a
+      href="https://wa.me/917517311326?text=Hello%20I'm%20visiting%20chordztechnologies.com%20and%20I'm%20interested%20to%20know%20your%20services"
+      target="_blank"
+      class="float"
+      ><i class="fab fa-whatsapp my-float" style="margin-top: 15px"></i
+    ></a>
   </div>
 
   <div class="app-end">
     <p>
-      © 2025 Chordz Technologies. All rights reserved.Developed by Chordz
-      Technologies
+      © 2025 Chordz Technologies. All rights reserved.
     </p>
   </div>
 </div>

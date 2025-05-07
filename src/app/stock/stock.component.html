@@ -8,62 +8,51 @@
 
     <button (click)="filterProductList('All')">Show All Data</button>
 
-    <button (click)="showAddStockForm = !showAddStockForm">
+    <button (click)="showAddStockForm = !showAddStockForm" class="add-new-stock-button">
       Add New Stock
-    </button>
-
-    <button (click)="showUploadForm = !showUploadForm">
-      Upload Documents
     </button>
   </div>
 
   <div *ngIf="showAddStockForm" class="add-stock-form">
-    <h3>Add New Stock</h3>
+    <form #form="ngForm" (ngSubmit)="addNewStock(form)">
+      <h3>Add New Stock</h3>
 
-    <input
-      type="text"
-      name="description"
-      placeholder="Name"
-      [(ngModel)]="newStock.description"
-      required
-    />
-    <input
-      type="text"
-      name="supplier"
-      placeholder="Supplier Name"
-      [(ngModel)]="newStock.supplier"
-      required
-    />
-    <input
-      type="number"
-      name="price"
-      placeholder="Price"
-      [(ngModel)]="newStock.price"
-      required
-    />
-    <input
-      type="text"
-      name="hsn_code"
-      placeholder="HSN No"
-      [(ngModel)]="newStock.hsn_code"
-      required
-    />
-    <select name="stock_type" [(ngModel)]="newStock.stock_type" required>
-      <option value="Parent">Parent</option>
-      <option value="Child">Child</option>
-    </select>
-
-    <button type="submit">Add Stock</button>
-  </div>
-
-  <div *ngIf="showUploadForm" class="upload-form">
-    <h3>Upload Documents</h3>
-    <p class="upload-info">Maximum file size allowed is 1MB.</p>
-    <input type="file" (change)="handleFileUpload($event)" multiple />
-    <div *ngIf="uploadErrorMessage" class="error-message">
-      {{ uploadErrorMessage }}
-    </div>
-    <button (click)="uploadSelectedFiles()">Upload</button>
+      <input
+        type="text"
+        name="description"
+        placeholder="Name"
+        [(ngModel)]="newStock.description"
+        required
+      />
+      <input
+        type="text"
+        name="supplier"
+        placeholder="Supplier Name"
+        [(ngModel)]="newStock.supplier"
+        required
+      />
+      <input
+        type="number"
+        name="price"
+        placeholder="Price"
+        [(ngModel)]="newStock.price"
+        required
+      />
+      <input
+        type="text"
+        name="hsn_code"
+        placeholder="HSN No"
+        [(ngModel)]="newStock.hsn_code"
+        required
+      />
+      <select name="stock_type" [(ngModel)]="newStock.stock_type" required>
+        <option value="Parent">Parent</option>
+        <option value="Child">Child</option>
+      </select>
+<div class="button-container">
+      <button type="submit">Add Stock</button>
+</div>
+    </form>
   </div>
 
   <h3>Selected Products</h3>
@@ -124,7 +113,17 @@
             />
             <span *ngIf="editingIndex !== i">{{ product.hsn_code }}</span>
           </td>
-          <td>{{ product.stock_type }}</td>
+          <td>
+            <select
+              *ngIf="editingIndex === i"
+              [(ngModel)]="product.stock_type"
+              class="edit-input"
+            >
+              <option value="Parent">Parent</option>
+              <option value="Child">Child</option>
+            </select>
+            <span *ngIf="editingIndex !== i">{{ product.stock_type }}</span>
+          </td>
           <td>
             <input
               type="number"
@@ -135,7 +134,11 @@
           </td>
           <td>₹{{ product.total }}</td>
           <td>
-            <mat-icon *ngIf="editingIndex !== i" (click)="editProduct(i)">
+            <mat-icon
+              class="edit"
+              *ngIf="editingIndex !== i"
+              (click)="editProduct(i)"
+            >
               edit
             </mat-icon>
             <mat-icon
@@ -145,13 +148,12 @@
             >
               save
             </mat-icon>
-            <mat-icon (click)="removeProduct(i)">delete</mat-icon>
+            <mat-icon class="delete" (click)="removeProduct(i)"
+              >delete</mat-icon
+            >
           </td>
         </tr>
       </tbody>
     </table>
-    <div *ngIf="filteredProductList.length === 0">
-      <p>No products found based on the filter.</p>
-    </div>
   </div>
 </div>

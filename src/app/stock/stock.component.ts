@@ -17,11 +17,6 @@ export class StockComponent implements OnInit {
   productList: Product[] = [];
   filteredProductList: Product[] = [];
   editingIndex: number | null = null;
-  showUploadForm = false;
-  selectedFiles: File[] = [];
-  uploadErrorMessage = '';
-  readonly MAX_FILE_SIZE_MB = 1; // 1MB limit
-  readonly MAX_FILE_SIZE_BYTES = this.MAX_FILE_SIZE_MB * 1024 * 1024;
 
   newStock: Product = {
     description: '',
@@ -46,7 +41,7 @@ export class StockComponent implements OnInit {
   loadProducts(): void {
     this.productsService.getProducts().subscribe({
       next: (response: any) => {
-        if (response && response) {
+        if (response && response.all_info) {
           this.productList = response.all_info.map((product: Product) => ({
             ...product,
             quantity: product.quantity ?? 1,
@@ -187,39 +182,6 @@ export class StockComponent implements OnInit {
         this.filterProductList('All');
         this.toastr.warning('Removed untracked item', 'Warning');
       }
-    }
-  }
-
-  handleFileUpload(event: any): void {
-    this.selectedFiles = Array.from(event.target.files);
-    this.validateFileSizes();
-  }
-
-  validateFileSizes(): void {
-    this.uploadErrorMessage = '';
-    for (const file of this.selectedFiles) {
-      if (file.size > this.MAX_FILE_SIZE_BYTES) {
-        this.uploadErrorMessage = `File "${file.name}" exceeds the maximum allowed size of ${this.MAX_FILE_SIZE_MB}MB.`;
-        break; // Show only the first error message
-      }
-    }
-  }
-
-  uploadSelectedFiles(): void {
-    if (this.uploadErrorMessage) {
-      this.toastr.error(this.uploadErrorMessage, 'File Size Error');
-      return;
-    }
-
-    if (this.selectedFiles.length > 0) {
-      // In a real application, you would send these files to a server
-      console.log('Uploading files:', this.selectedFiles);
-      this.toastr.success('Files selected for upload', 'Success');
-      // You would typically have an API call here to upload the files
-      this.selectedFiles = [];
-      this.showUploadForm = false;
-    } else {
-      this.toastr.warning('Please select files to upload.', 'Warning');
     }
   }
 }

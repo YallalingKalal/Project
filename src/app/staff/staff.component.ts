@@ -133,7 +133,7 @@ export class StaffComponent implements OnInit {
             this.filteredStaffList = [...this.staffList];
             this.registrationForm.reset();
             this.loadStaff();
-            this.photoURL = null;
+            this.photoURL = null; 
             this.showForm = false;
             this.editingStaffIndex = null;
             this.viewFormDetails = false;

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
@@ -10,6 +10,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
 import { RouterLink } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
+import { DashboardData, DashboardService } from '../dashboard.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -31,10 +32,25 @@ import { MatButtonModule } from '@angular/material/button';
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css',
 })
-export class DashboardComponent {
-  longText = `The Chihuahua is a Mexican breed of toy dog. It is named for the
-  Mexican state of Chihuahua and is among the smallest of all dog breeds. It is
-  usually kept as a companion animal or for showing.`;
+export class DashboardComponent implements OnInit {
+  dashboardData: DashboardData | null = null;
+
+  constructor(private dashboardService: DashboardService,
+    private cdr: ChangeDetectorRef
+  ) { }
+
+  ngOnInit(): void {
+    this.dashboardService.getDashboardData().subscribe({
+      next: (data) => {
+        this.dashboardData = data;
+        this.cdr.markForCheck(); // ✅ manually tell Angular to check for changes
+      },
+      error: (err) => {
+        console.error('Failed to load dashboard data:', err);
+      }
+    });
+  }
+
 
   tableData = [
     {
